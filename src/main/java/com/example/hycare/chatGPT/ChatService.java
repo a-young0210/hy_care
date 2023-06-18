@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class ChatService {
 
     private final ChatgptService chatgptService;
 
-    @GetMapping("")
-    public String getChatResponse(String stt) {
 
-        String question = "\"question\": [{" + stt + "\"summary\": \"이 문장 요약해줘.\"";
+    @GetMapping("")
+    public String getChatResponse(Map<String, String> stt) {
 
         // ChatGPT에게 질문
-        return chatgptService.sendMessage(question);
+        return chatgptService.sendMessage(stt.values() + "이 문장 요약해줘.");
     }
 
 }
