@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RequiredArgsConstructor
 @RestController
 @Slf4j
@@ -18,13 +20,13 @@ public class testController {
     public String summary;
 
     //chat-gpt API 호출
-    @GetMapping("")
-    public String summary(@RequestBody String question) {
+     @PostMapping("")
+     public String summary(@RequestBody Map<String, String> stt) {
 
-        // ChatGPT가 답변
-        summary = chatService.getChatResponse(question);
+        summary = chatService.getChatResponse(stt);
 
-        return summary;
+        return stt.get(summary);
+
     }
 
 }
