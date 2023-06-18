@@ -8,6 +8,7 @@ public class HyCareApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HyCareApplication.class, args);
+
     }
 
 }
