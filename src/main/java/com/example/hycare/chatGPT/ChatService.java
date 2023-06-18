@@ -13,7 +13,7 @@ public class ChatService {
 
     private final ChatgptService chatgptService;
 
-    @PostMapping("")
+    @GetMapping("")
     public String getChatResponse(String stt) {
 
         String question = "\"question\": [{" + stt + "\"summary\": \"이 문장 요약해줘.\"";

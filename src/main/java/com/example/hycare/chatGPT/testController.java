@@ -18,12 +18,11 @@ public class testController {
     public String summary;
 
     //chat-gpt API 호출
-    @GetMapping("")
+    @PostMapping("")
     public String summary(@RequestBody String question) {
 
         // ChatGPT가 답변
         summary = chatService.getChatResponse(question);
-
         return summary;
     }
 
