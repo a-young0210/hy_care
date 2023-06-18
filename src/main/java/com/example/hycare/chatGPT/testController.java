@@ -20,9 +20,11 @@ public class testController {
     //chat-gpt API 호출
     @GetMapping("")
     public String summary(@RequestBody String question) {
+
         // ChatGPT가 답변
         summary = chatService.getChatResponse(question);
-        return "redirection";
+
+        return summary;
     }
 
 }

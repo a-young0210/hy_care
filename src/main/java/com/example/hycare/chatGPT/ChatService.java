@@ -14,10 +14,12 @@ public class ChatService {
     private final ChatgptService chatgptService;
 
     @PostMapping("")
-    public String getChatResponse(String prompt) {
+    public String getChatResponse(String stt) {
+
+        String question = "\"question\": [{" + stt + "\"summary\": \"이 문장 요약해줘.\"";
 
         // ChatGPT에게 질문
-        return chatgptService.sendMessage(prompt);
+        return chatgptService.sendMessage(question);
     }
 
 }
