@@ -21,6 +21,7 @@ public class ChatService {
 
         // ChatGPT에게 질문
         return chatgptService.sendMessage(stt.values() + "이 문장 요약해줘.");
+
     }
 
 }
