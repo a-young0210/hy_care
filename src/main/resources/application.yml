@@ -1,2 +1,15 @@
 chat-gpt:
   api-key: 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
+
+
+spring:
+  thymeleaf:
+    prefix : classpath:templates/
+    suffix : .html
+    cache : false
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
