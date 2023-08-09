@@ -1,5 +1,9 @@
+server:
+  host:
+    api: http://localhost:8080
+
 chat-gpt:
-  api-key: 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
+  api-key:
 
 
 spring:
@@ -13,3 +17,19 @@ spring:
       enabled: true
     restart:
       enabled: false
+
+  profiles:
+    active: local
+
+cloud:
+  aws:
+    s3:
+      bucket:
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
