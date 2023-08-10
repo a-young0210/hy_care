@@ -10,7 +10,8 @@ public enum ApiResult {
     NAMED_ENTITY_IN_USE("1000", "NamedEntity in use"),
     INTENT_CLASSIFICATION_ENTITY_NOT_FOUND("1404", "IntentClassificationEntity not found"),
     INTENT_CLASSIFICATION_ENTITY_VALUE_TAG_NOT_FOUND("1404", "IntentClassificationEntityValueTag not found"),
-    INTENT_CLASSIFICATION_ENTITY_IN_USE("1000", "IntentClassificationEntity in use")
+    INTENT_CLASSIFICATION_ENTITY_IN_USE("1000", "IntentClassificationEntity in use"),
+    S3_FAIL("3333", "S3 save fail")
     ;
 
     public static final String CODE_NOT_FOUND = "1404";

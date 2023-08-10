@@ -17,7 +17,6 @@ public class S3Controller {
 
     @PostMapping("/s3-save")
     public ResponseEntity<ResultEntity> uploadFile(@RequestBody String path) {
-        ResultEntity resultEntity = new ResultEntity();
         try {
             File file = new File(path + "/chatGPTDto.json");
             s3Uploader.upload(file, "static");
