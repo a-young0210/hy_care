@@ -1,0 +1,54 @@
+server:
+  host:
+    api: http://54.180.81.129
+
+chat-gpt:
+  api-key:
+
+
+spring:
+  thymeleaf:
+    prefix : classpath:templates/
+    suffix : .html
+    cache : false
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+
+  profiles:
+    active: dev
+
+  # RDS 정보
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql : true
+    database: mysql
+
+
+# S3 정보
+# accessKeys -> access-key: Access key ID, secret-key: Secret access key
+cloud:
+  aws:
+    s3:
+      bucket:
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
