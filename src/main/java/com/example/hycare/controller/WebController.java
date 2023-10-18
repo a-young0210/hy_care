@@ -14,4 +14,10 @@ public class WebController {
 
         return "home/home.html";
     }
+
+    @RequestMapping("/consult")
+    public String consultWeb(Model model) {
+
+        return "consult/consultStart.html";
+    }
 }
