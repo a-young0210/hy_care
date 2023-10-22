@@ -1,9 +1,9 @@
 server:
   host:
-    api: http://localhost:8080
+    api: http://54.180.81.129
 
 chat-gpt:
-  api-key: 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
+  api-key:
 
 
 spring:
@@ -19,9 +19,9 @@ spring:
       enabled: false
 
   profiles:
-    active: local
+    active: dev
 
-# RDS 정보
+  # RDS 정보
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url:
