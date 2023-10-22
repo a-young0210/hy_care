@@ -20,7 +20,7 @@ public class ChatService {
     public String getChatResponse(Map<String, String> stt) {
 
         // ChatGPT에게 질문
-        return chatgptService.sendMessage(stt.values() + "이 문장 요약해줘.");
+        return chatgptService.sendMessage(stt.values() + "병원 진료 대화 내용 3줄로 요약해줘.");
 
     }
 

@@ -3,7 +3,7 @@ server:
     api: http://localhost:8080
 
 chat-gpt:
-  api-key:
+  api-key: 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
 
 
 spring:
