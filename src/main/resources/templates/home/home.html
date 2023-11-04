@@ -5,23 +5,24 @@
 <head>
     <title>Hy-care</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
             font-size: 14px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
         .frame-container {
             width: 100%;
+            height: 100%;
             display: flex;
-            overflow: auto;
+            overflow: hidden;
             min-height: 100vh;
             align-items: center;
             flex-direction: column;
         }
         .frame-frame {
             width: 100%;
-            height: 795px;
+            height: 100%;
             display: flex;
             overflow: hidden;
             align-items: flex-start;
@@ -69,10 +70,6 @@
         .login-doctor-div {
             width: 369px;
             height: 474px;
-            background: url("../images/v58_337.png");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
             opacity: 1;
             position: absolute;
             top: 166px;
@@ -109,19 +106,17 @@
 <body>
     <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
 
-    <div>
-        <div class="frame-container">
-            <div class="frame-frame">
-                <div class="login-doctor-div" onclick="doctorLogin()">
-                    <span class="login-doctor">의사로 로그인하기</span>
-                    <img class="login-doctor-image" src="../image/loginDoctor.png" alt="login-doctor-image" />
+    <div class="frame-container">
+        <div class="frame-frame">
+            <div class="login-doctor-div" onclick="doctorLogin()">
+                <span class="login-doctor">의사로 로그인하기</span>
+                <img class="login-doctor-image" src="templates/image/logindoctor.png" alt="login-doctor-image">
+            </div>
+            <div class="login-paient-div" onclick="paientLogin()">
+                <div class="div2">
+                    <div class="name"></div>
                 </div>
-                <div class="login-paient-div" onclick="paientLogin()">
-                    <div class="div2">
-                        <div class="name"></div>
-                    </div>
-                    <span class="login-paient">환자로 로그인하기</span>
-                </div>
+                <span class="login-paient">환자로 로그인하기</span>
             </div>
         </div>
     </div>

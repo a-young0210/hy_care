@@ -11,13 +11,16 @@ public class WebController {
 
     @RequestMapping("/")
     public String mainWeb(Model model) {
-
         return "home/home.html";
     }
 
     @RequestMapping("/consult")
     public String consultWeb(Model model) {
-
         return "consult/consultStart.html";
+    }
+
+    @RequestMapping("/my-page")
+    public String myPageWeb(Model model) {
+        return "myPage/myPage.html";
     }
 }

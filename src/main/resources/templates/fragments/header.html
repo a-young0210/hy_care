@@ -77,20 +77,15 @@
     </style>
 </head>
 <body>
-<div>
-    <div class="header-navbar">
-        <button class="hycare" onclick="location.href='/'"><span>Hy-care</span></button>
-        <div class="frame-menu">
-            <button class="consult" onclick="location.href='/consult'"><span id="consult">화상진료</span></button>
-        </div>
-        <button class="login-join" onclick="loginClick()"><span>로그인/회원가입</span></button>
+<div class="header-navbar" id="header-navbar">
+    <button class="hycare" onclick="location.href='/'"><span>Hy-care</span></button>
+    <div class="frame-menu">
+        <button class="consult" onclick="location.href='/consult'"><span id="consult">화상진료</span></button>
     </div>
+    <button class="login-join" onclick="location.href='/my-page'"><span>로그인/회원가입</span></button>
 </div>
 </body>
 <script>
-    function loginClick() {
-        console.log("로그인")
-    }
 
     // 마우스 hover 이벤트
     document.querySelector('.consult').addEventListener('mouseenter', () => {
