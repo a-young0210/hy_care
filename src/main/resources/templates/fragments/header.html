@@ -2,9 +2,97 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>header</title>
+    <style>
+        .header-navbar {
+            top: 0px;
+            left: 0px;
+            width: 1530px;
+            height: 90px;
+            display: flex;
+            position: absolute;
+            align-items: flex-start;
+            flex-shrink: 1;
+            background-color: rgba(50, 205, 50, 1);
+        }
+        .login-join {
+            top: 33px;
+            left: 1289px;
+            color: rgba(255, 255, 255, 1);
+            height: auto;
+            position: absolute;
+            font-size: 18px;
+            font-style: Bold;
+            text-align: center;
+            font-family: DM Sans;
+            font-weight: 700;
+            line-height: normal;
+            font-stretch: normal;
+            text-decoration: none;
+            border: 0;
+            background-color: transparent;
+        }
+        .hycare {
+            top: 22.272705078125px;
+            left: 127.2987060546875px;
+            color: rgba(255, 255, 255, 1);
+            width: 182px;
+            height: auto;
+            position: absolute;
+            font-size: 36px;
+            font-style: Medium;
+            text-align: left;
+            font-family: DM Sans;
+            font-weight: 500;
+            line-height: normal;
+            font-stretch: normal;
+            text-decoration: none;
+            border: 0;
+            background-color: transparent;
+        }
+        .frame-menu {
+            top: 33px;
+            left: 494px;
+            width: 596px;
+            height: 42px;
+            display: flex;
+            position: absolute;
+            align-items: flex-start;
+            flex-shrink: 1;
+        }
+        .consult {
+            color: white;
+            height: auto;
+            position: absolute;
+            font-size: 24px;
+            font-style: Bold;
+            text-align: center;
+            font-family: DM Sans;
+            font-weight: 700;
+            line-height: normal;
+            font-stretch: normal;
+            text-decoration: none;
+            border: 0;
+            background-color: transparent;
+        }
+    </style>
 </head>
 <body>
-
+<div class="header-navbar" id="header-navbar">
+    <button class="hycare" onclick="location.href='/'"><span>Hy-care</span></button>
+    <div class="frame-menu">
+        <button class="consult" onclick="location.href='/consult'"><span id="consult">화상진료</span></button>
+    </div>
+    <button class="login-join" onclick="location.href='/my-page'"><span>로그인/회원가입</span></button>
+</div>
 </body>
+<script>
+
+    // 마우스 hover 이벤트
+    document.querySelector('.consult').addEventListener('mouseenter', () => {
+        document.getElementById("consult").style.color="black"
+    });
+    document.querySelector('.consult').addEventListener('mouseleave', () => {
+        document.getElementById("consult").style.color="white"
+    });
+</script>
 </html>
