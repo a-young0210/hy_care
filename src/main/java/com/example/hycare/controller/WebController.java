@@ -23,4 +23,9 @@ public class WebController {
     public String myPageWeb(Model model) {
         return "myPage/myPage.html";
     }
+
+    @RequestMapping("/doctor-login")
+    public String doctorLoginWeb(Model model) {
+        return "login/doctorLogin.html";
+    }
 }

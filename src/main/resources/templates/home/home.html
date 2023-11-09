@@ -110,7 +110,7 @@
         <div class="frame-frame">
             <div class="login-doctor-div" onclick="doctorLogin()">
                 <span class="login-doctor">의사로 로그인하기</span>
-                <img class="login-doctor-image" src="templates/image/logindoctor.png" alt="login-doctor-image">
+                <img class="login-doctor-image" src="../image/logindoctor.png" alt="login-doctor-image"/>
             </div>
             <div class="login-paient-div" onclick="paientLogin()">
                 <div class="div2">
@@ -126,6 +126,7 @@
 <script>
     function doctorLogin() {
         console.log('의사 로그인')
+        location.href='/doctor-login'
     }
 
     function paientLogin() {
