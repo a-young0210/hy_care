@@ -1,6 +1,7 @@
 package com.example.hycare.s3;
 
-import com.example.hycare.dto.HycareDto;
+import com.example.hycare.Service.HycareService;
+import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.chatGPT.ChatGPTDto;
 import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.io.*;
 @RestController
 public class S3Controller {
     private final S3Service s3Service;
+    private final HycareService hycareService;
 
     @Value("${server.host.api}")
     private String baseUrl;
@@ -26,25 +28,17 @@ public class S3Controller {
             File file = new File(path + "/chatGPTDto.json");
             String s3Url = s3Service.upload(file, "static");
 
-            HycareDto hycareDto = new HycareDto();
-            hycareDto.setDiagText(s3Url);
+            DiagnosisDto diagnosisDto = new DiagnosisDto();
+            diagnosisDto.setDiagLink(s3Url);
 
-            // DB 저장 controller 호출
-            String url = baseUrl + "/hy-care/save";
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity httpEntity = new HttpEntity<>(hycareDto, headers);
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<ResultEntity> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    httpEntity,
-                    ResultEntity.class);
+            hycareService.saveHycare(diagnosisDto);
 
         } catch (Exception e) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * id 타입 변경해야함*/
     // S3에서 객체 url 조회
     @GetMapping("/s3-find/{id}")
     public ResultEntity<ChatGPTDto> findS3(@PathVariable("id") String id) {

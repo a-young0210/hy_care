@@ -1,7 +1,7 @@
 package com.example.hycare.controller;
 
 import com.example.hycare.chatGPT.ChatGPTDto;
-import com.example.hycare.dto.HycareDto;
+import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.Service.HycareService;
 import com.example.hycare.entity.ApiResult;
 import com.example.hycare.entity.ResultEntity;
@@ -21,31 +21,35 @@ public class HycareController {
     private String baseUrl;
 
     @PostMapping("/save")
-    public ResponseEntity<ResultEntity> saveHycare (@RequestBody HycareDto hycareDto) {
+    public ResponseEntity<ResultEntity> saveHycare (@RequestBody DiagnosisDto diagnosisDto) {
         try {
-            hycareService.saveHycare(hycareDto);
+            hycareService.saveHycare(diagnosisDto);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * id 타입 변경해야함*/
     @GetMapping("/find/{id}")
-    public ResultEntity<HycareDto> findById (@PathVariable("id") Long id) {
+    public ResultEntity<DiagnosisDto> findById (@PathVariable("id") Long id) {
         try {
-            HycareDto hycareDto = hycareService.findData(id);
-            return new ResultEntity<>(hycareDto);
+            DiagnosisDto diagnosisDto = hycareService.findData(id);
+            return new ResultEntity<>(diagnosisDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * id 타입 변경해야함*/
     @GetMapping("/find-diagText/{id}")
     public ResultEntity<Object> findDiagText (@PathVariable("id") Long id) {
         try {
-            HycareDto hycareDto = hycareService.findData(id);
+            DiagnosisDto diagnosisDto = hycareService.findData(id);
 
-            String[] diagUrl = hycareDto.getDiagText().split("/");
+            String[] diagUrl = diagnosisDto.getDiagLink().split("/");
 
             String[] s3find = diagUrl[4].split("_");
             Long diagId =  Long.parseLong(s3find[0]);

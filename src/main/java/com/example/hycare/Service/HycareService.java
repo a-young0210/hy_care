@@ -1,39 +1,49 @@
 package com.example.hycare.Service;
 
-import com.example.hycare.dto.HycareDto;
-import com.example.hycare.Repository.HycareRepository;
-import com.example.hycare.entity.Hycare;
+import com.example.hycare.Repository.DiagnosisRepository;
+import com.example.hycare.dto.DiagnosisDto;
+import com.example.hycare.entity.Diagnosis;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class HycareService {
-    private final HycareRepository hycareRepository;
+    private final DiagnosisRepository diagnosisRepository;
 
-    public void saveHycare(HycareDto hycareDto) {
+    public void saveHycare(DiagnosisDto diagnosisDto) {
 
         // Dto -> Entity
-        Hycare hycare = new Hycare();
-        hycare.setDiagText(hycareDto.getDiagText());
-        hycare.setSheetImg(hycareDto.getSheetImg());
+        Diagnosis diagnosis = new Diagnosis();
+        diagnosis.setDiagLink(diagnosisDto.getDiagLink());
+        diagnosis.setConsultationSheet(diagnosisDto.getConsultationSheet());
+
+        /**
+         * id 임의 생성
+         * 추후에 WebRTC UUID로 바꾸어주어야함*/
+        Date today = new Date();
+        Locale currentLocale = new Locale("KOREAN", "KOREA");
+        String pattern = "HHmmss"; //HHmmss 형태로 변환
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, currentLocale);
+        diagnosis.setDiagId(formatter.format(today));
 
         // DB에 저장
-        hycareRepository.save(hycare);
+        diagnosisRepository.save(diagnosis);
     }
 
-    public HycareDto findData(Long id) {
-        Optional<Hycare> hycare = hycareRepository.findById(id);
+    public DiagnosisDto findData(Long id) {
+        Optional<Diagnosis> diagnosis = diagnosisRepository.findById(id);
 
-        HycareDto hycareDto = HycareDto.builder()
-                .id(hycare.get().getId())
-                .diagText(hycare.get().getDiagText())
-                .sheetImg(hycare.get().getSheetImg())
-                .sttTime(hycare.get().getSttTime())
-                .EndTime(hycare.get().getEndTime())
+        DiagnosisDto hycareDto = DiagnosisDto.builder()
+                .diagId(diagnosis.get().getDiagId())
+                .diagLink(diagnosis.get().getDiagLink())
+                .consultationSheet(diagnosis.get().getConsultationSheet())
+                .diagTime(diagnosis.get().getDiagTime())
                 .build();
 
         return hycareDto;
