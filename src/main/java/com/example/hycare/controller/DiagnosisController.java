@@ -19,9 +19,9 @@ public class DiagnosisController {
     private String baseUrl;
 
     @PostMapping("/save")
-    public ResponseEntity<ResultEntity> saveHycare (@RequestBody DiagnosisDto diagnosisDto) {
+    public ResponseEntity<ResultEntity> saveDiagnosis (@RequestBody DiagnosisDto diagnosisDto) {
         try {
-            diagnosisService.saveHycare(diagnosisDto);
+            diagnosisService.saveDiagnosis(diagnosisDto);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

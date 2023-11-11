@@ -30,7 +30,7 @@ public class S3Controller {
             DiagnosisDto diagnosisDto = new DiagnosisDto();
             diagnosisDto.setDiagLink(s3Url);
 
-            diagnosisService.saveHycare(diagnosisDto);
+            diagnosisService.saveDiagnosis(diagnosisDto);
 
         } catch (Exception e) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
         return new ResponseEntity(HttpStatus.OK);

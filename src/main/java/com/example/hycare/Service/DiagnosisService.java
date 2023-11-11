@@ -16,7 +16,7 @@ import java.util.Optional;
 public class DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
 
-    public void saveHycare(DiagnosisDto diagnosisDto) {
+    public void saveDiagnosis(DiagnosisDto diagnosisDto) {
 
         // Dto -> Entity
         Diagnosis diagnosis = new Diagnosis();
