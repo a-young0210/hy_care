@@ -1,9 +1,7 @@
 package com.example.hycare.controller;
 
-import com.example.hycare.chatGPT.ChatGPTDto;
 import com.example.hycare.dto.DiagnosisDto;
-import com.example.hycare.Service.HycareService;
-import com.example.hycare.entity.ApiResult;
+import com.example.hycare.Service.DiagnosisService;
 import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,9 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/hy-care")
-public class HycareController {
-    private final HycareService hycareService;
+@RequestMapping("/diagnosis")
+public class DiagnosisController {
+    private final DiagnosisService diagnosisService;
 
     @Value("${server.host.api}")
     private String baseUrl;
@@ -23,7 +21,7 @@ public class HycareController {
     @PostMapping("/save")
     public ResponseEntity<ResultEntity> saveHycare (@RequestBody DiagnosisDto diagnosisDto) {
         try {
-            hycareService.saveHycare(diagnosisDto);
+            diagnosisService.saveHycare(diagnosisDto);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -35,7 +33,7 @@ public class HycareController {
     @GetMapping("/find/{id}")
     public ResultEntity<DiagnosisDto> findById (@PathVariable("id") Long id) {
         try {
-            DiagnosisDto diagnosisDto = hycareService.findData(id);
+            DiagnosisDto diagnosisDto = diagnosisService.findData(id);
             return new ResultEntity<>(diagnosisDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -47,7 +45,7 @@ public class HycareController {
     @GetMapping("/find-diagText/{id}")
     public ResultEntity<Object> findDiagText (@PathVariable("id") Long id) {
         try {
-            DiagnosisDto diagnosisDto = hycareService.findData(id);
+            DiagnosisDto diagnosisDto = diagnosisService.findData(id);
 
             String[] diagUrl = diagnosisDto.getDiagLink().split("/");
 

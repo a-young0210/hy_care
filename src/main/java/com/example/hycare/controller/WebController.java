@@ -26,6 +26,6 @@ public class WebController {
 
     @RequestMapping("/doctor-login")
     public String doctorLoginWeb(Model model) {
-        return "login/doctorLogin.html";
+        return "login/login.html";
     }
 }

@@ -1,6 +1,6 @@
 package com.example.hycare.s3;
 
-import com.example.hycare.Service.HycareService;
+import com.example.hycare.Service.DiagnosisService;
 import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.chatGPT.ChatGPTDto;
 import com.example.hycare.entity.ResultEntity;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 
@@ -16,7 +15,7 @@ import java.io.*;
 @RestController
 public class S3Controller {
     private final S3Service s3Service;
-    private final HycareService hycareService;
+    private final DiagnosisService diagnosisService;
 
     @Value("${server.host.api}")
     private String baseUrl;
@@ -31,7 +30,7 @@ public class S3Controller {
             DiagnosisDto diagnosisDto = new DiagnosisDto();
             diagnosisDto.setDiagLink(s3Url);
 
-            hycareService.saveHycare(diagnosisDto);
+            diagnosisService.saveHycare(diagnosisDto);
 
         } catch (Exception e) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
         return new ResponseEntity(HttpStatus.OK);

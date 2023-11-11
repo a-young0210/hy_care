@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class HycareService {
+public class DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
 
     public void saveHycare(DiagnosisDto diagnosisDto) {
