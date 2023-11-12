@@ -22,6 +22,7 @@ public class DiagnosisController {
     public ResponseEntity<ResultEntity> saveDiagnosis (@RequestBody DiagnosisDto diagnosisDto) {
         try {
             diagnosisService.saveDiagnosis(diagnosisDto);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

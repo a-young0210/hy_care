@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ public class Member {
     private int memId;
     private String memName;
     private Timestamp editTime;
-    private String isDctor;
+    private String isDoctor;
     private String email;
 
     private String diagId;

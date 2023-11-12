@@ -3,6 +3,7 @@ package com.example.hycare.dto;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,8 +14,8 @@ public class MemberDto {
     private int memId;
     private String memName;
     private Timestamp editTime;
-    private String isDctor;
+    private String isDoctor;
     private String email;
 
-    private String diagId;
+    private List<String> diagId;
 }
