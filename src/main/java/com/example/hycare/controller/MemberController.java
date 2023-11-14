@@ -6,6 +6,7 @@ import com.example.hycare.entity.ApiResult;
 import com.example.hycare.entity.Member;
 import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
@@ -36,14 +38,17 @@ public class MemberController {
 
                 // 회원가입 및 로그인 성공 반환
                 result.setCode("0000");
-                result.setMessage("Join and Sign up Success");
+                result.setMessage("Join and Login Success");
+                log.info("Join and Login Success");
             } else {
                 // 로그인 성공 반환
                 result.setCode("0000");
-                result.setMessage("Sign up Success");
+                result.setMessage("Login Success");
+                log.info("Login Success");
             }
             return result;
         } catch (Exception e) {
+            log.error("Login or Join Fail");
             return new ResultEntity(e);
         }
     }
@@ -58,12 +63,15 @@ public class MemberController {
                result.setCode(ApiResult.USER_NOT_FOUND.getCode());
                result.setMessage(ApiResult.USER_NOT_FOUND.getMessage());
                result.setData(null);
+                log.warn("Member not found");
                 return result;
             }
             result.setData(member);
         } catch (Exception e) {
+            log.error("Find member fail");
             result = new ResultEntity(e);
         }
+        log.info("Find member success");
         return result;
     }
 
@@ -86,11 +94,14 @@ public class MemberController {
                 result.setCode(ApiResult.USER_NOT_FOUND.getCode());
                 result.setMessage(ApiResult.USER_NOT_FOUND.getMessage());
                 result.setData(null);
+                log.warn("Member not found");
                 return result;
             }
         } catch (Exception e) {
+            log.error("Member diagId update fail");
             return new ResultEntity(e);
         }
+        log.info("Member diagId update success");
         return result;
     }
 
