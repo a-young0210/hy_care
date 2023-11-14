@@ -68,17 +68,16 @@ public class MemberController {
     }
 
     // 진료 완료 -> member의 diagId 업데이트
-    /**
-     * 수정해야함*/
     @PostMapping("update/{id}")
     public ResultEntity updateDiagId(@PathVariable("id") int id, @RequestBody String diagnosisId) {
         ResultEntity result = new ResultEntity(ApiResult.SUCCESSS);
         MemberDto memberDto = new MemberDto();
+        List<String> diagIdList = new ArrayList<String>();
         try {
             memberDto = memberService.findById(id);
             if(memberDto != null) {     // 회원 존재
                 // 기존 diagId에 추가
-                List<String> diagIdList = memberDto.getDiagId();
+                diagIdList.addAll(memberDto.getDiagId());
                 diagIdList.add(diagnosisId);
                 memberDto.setDiagId(diagIdList);
                 memberService.addDiagId(memberDto);
