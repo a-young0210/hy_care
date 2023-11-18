@@ -4,6 +4,7 @@ import com.example.hycare.Repository.MemberRepository;
 import com.example.hycare.dto.MemberDto;
 import com.example.hycare.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.security.Timestamp;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -30,6 +32,7 @@ public class MemberService {
     }
 
     public MemberDto findByEmail(String email) {
+        log.info("findByEmail Service");
         MemberDto memberDto = new MemberDto();
         Member member = memberRepository.findByEmail(email);
         List<String> diagId = new ArrayList<>();

@@ -8,11 +8,15 @@ import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -105,13 +109,20 @@ public class MemberController {
         return result;
     }
 
-
     // 회원이 존재하는지 validation
     public Boolean memValid(String email) {
+        log.info("Find Member");
         MemberDto member = memberService.findByEmail(email);
         if(member.getEmail() == null) {   // 회원 존재X
             return true;
         }
         return false;
+    }
+
+    @GetMapping("find-member")
+    @Cacheable(value = "memberCache")
+    public MemberDto findMember(@RequestBody String email) {
+        MemberDto member = memberService.findByEmail(email);
+        return member;
     }
 }
