@@ -6,6 +6,7 @@ import com.example.hycare.entity.Diagnosis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -16,27 +17,23 @@ import java.util.Optional;
 public class DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
 
-    public void saveDiagnosis(DiagnosisDto diagnosisDto) {
+    public void saveDiagnosis(DiagnosisDto diagnosisDto, String uuid) {
 
         // Dto -> Entity
         Diagnosis diagnosis = new Diagnosis();
+        diagnosis.setDiagId(uuid);
         diagnosis.setDiagLink(diagnosisDto.getDiagLink());
         diagnosis.setConsultationSheet(diagnosisDto.getConsultationSheet());
 
-        /**
-         * id 임의 생성
-         * 추후에 WebRTC UUID로 바꾸어주어야함*/
-        Date today = new Date();
-        Locale currentLocale = new Locale("KOREAN", "KOREA");
-        String pattern = "HHmmss"; //HHmmss 형태로 변환
-        SimpleDateFormat formatter = new SimpleDateFormat(pattern, currentLocale);
-        diagnosis.setDiagId(formatter.format(today));
+        Long datetime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(datetime);
+        diagnosis.setDiagTime(timestamp);
 
         // DB에 저장
         diagnosisRepository.save(diagnosis);
     }
 
-    public DiagnosisDto findData(Long id) {
+    public DiagnosisDto findData(String id) {
         Optional<Diagnosis> diagnosis = diagnosisRepository.findById(id);
 
         DiagnosisDto hycareDto = DiagnosisDto.builder()

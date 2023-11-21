@@ -18,10 +18,10 @@ public class DiagnosisController {
     @Value("${server.host.api}")
     private String baseUrl;
 
-    @PostMapping("/save")
-    public ResponseEntity<ResultEntity> saveDiagnosis (@RequestBody DiagnosisDto diagnosisDto) {
+    @PostMapping("/save/{uuid}")
+    public ResponseEntity<ResultEntity> saveDiagnosis (@RequestBody DiagnosisDto diagnosisDto, @PathVariable String uuid) {
         try {
-            diagnosisService.saveDiagnosis(diagnosisDto);
+            diagnosisService.saveDiagnosis(diagnosisDto, uuid);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -29,33 +29,28 @@ public class DiagnosisController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /**
-     * id 타입 변경해야함*/
-    @GetMapping("/find/{id}")
-    public ResultEntity<DiagnosisDto> findById (@PathVariable("id") Long id) {
+    @GetMapping("/find/{uuid}")
+    public ResultEntity<DiagnosisDto> findById (@PathVariable("uuid") String uuid) {
         try {
-            DiagnosisDto diagnosisDto = diagnosisService.findData(id);
+            DiagnosisDto diagnosisDto = diagnosisService.findData(uuid);
             return new ResultEntity<>(diagnosisDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    /**
-     * id 타입 변경해야함*/
-    @GetMapping("/find-diagText/{id}")
-    public ResultEntity<Object> findDiagText (@PathVariable("id") Long id) {
+    @GetMapping("/find-diagText/{uuid}")
+    public ResultEntity<Object> findDiagText (@PathVariable("uuid") String uuid) {
         try {
-            DiagnosisDto diagnosisDto = diagnosisService.findData(id);
+            // diagnosis DB에서 데이터 가져오기
+            DiagnosisDto diagnosisDto = diagnosisService.findData(uuid);
 
+            // s3에서 가져올 파일 이름 구하기
             String[] diagUrl = diagnosisDto.getDiagLink().split("/");
-
             String[] s3find = diagUrl[4].split("_");
-            Long diagId =  Long.parseLong(s3find[0]);
-
 
             // s3 조회 api 호출
-            String url = baseUrl + "/s3-find/" + diagId;
+            String url = baseUrl + "/s3-find/" + s3find[0];
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity httpEntity = new HttpEntity<>(headers);
@@ -65,7 +60,6 @@ public class DiagnosisController {
                     HttpMethod.GET,
                     httpEntity,
                     ResultEntity.class);
-
 
             return new ResultEntity<>(response.getBody().getData());
         } catch (Exception e) {

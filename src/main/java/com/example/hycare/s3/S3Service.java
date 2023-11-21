@@ -26,12 +26,8 @@ public class S3Service {
     private String bucket;
     private final AmazonS3 s3Client;
 
-    public String upload(File uploadFile, String filePath) {
-        Date today = new Date();
-        Locale currentLocale = new Locale("KOREAN", "KOREA");
-        String pattern = "HHmmss"; //HHmmss 형태로 변환
-        SimpleDateFormat formatter = new SimpleDateFormat(pattern, currentLocale);
-        String fileName = filePath + "/" + formatter.format(today) + "_chatGPT.json";   // S3에 저장될 파일 이름
+    public String upload(File uploadFile, String filePath, String uuid) {
+        String fileName = filePath + "/" + uuid + "_chatGPT.json";   // S3에 저장될 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
         return uploadImageUrl;
     }

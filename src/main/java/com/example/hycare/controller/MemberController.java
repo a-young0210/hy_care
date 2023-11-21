@@ -1,22 +1,18 @@
 package com.example.hycare.controller;
 
+import com.example.hycare.Service.DiagnosisService;
 import com.example.hycare.Service.MemberService;
+import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.dto.MemberDto;
 import com.example.hycare.entity.ApiResult;
-import com.example.hycare.entity.Member;
 import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +21,7 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final DiagnosisService diagnosisService;
 
     @Value("${server.host.api}")
     private String baseUrl;
@@ -107,6 +104,18 @@ public class MemberController {
         }
         log.info("Member diagId update success");
         return result;
+    }
+
+    // 진료 기록 조회
+    @GetMapping("/find-dig/{id}")
+    public ResultEntity<List<DiagnosisDto>> findDiag(@PathVariable int id) {
+        MemberDto memberDto = memberService.findById(id);
+        List<DiagnosisDto> DiagnosisList = new ArrayList<>();
+        for(String diagId : memberDto.getDiagId()) {
+            DiagnosisList.add(diagnosisService.findData(diagId));
+        }
+
+        return new ResultEntity<>(DiagnosisList);
     }
 
     // 회원이 존재하는지 validation

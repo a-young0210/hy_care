@@ -36,8 +36,8 @@ public class testController {
     private String baseUrl;
 
     //chat-gpt API 호출
-     @PostMapping("")
-     public String summary(@RequestBody Map<String, String> stt) throws IOException {
+     @PostMapping("/{uuid}")
+     public String summary(@RequestBody Map<String, String> stt, @PathVariable String uuid) throws IOException {
 
         summary = chatService.getChatResponse(stt);
 
@@ -65,7 +65,7 @@ public class testController {
          mapper.writeValue(new File(path + "/chatGPTDto.json"), chatGPTDto);
 
          // S3에 저장할 수 있도록 API 호출
-         String url = baseUrl + "/s3-save";
+         String url = baseUrl + "/s3-save/" + uuid;
          HttpHeaders headers = new HttpHeaders();
          headers.setContentType(MediaType.APPLICATION_JSON);
          HttpEntity httpEntity = new HttpEntity<>(path, headers);

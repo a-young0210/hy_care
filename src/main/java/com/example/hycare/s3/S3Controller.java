@@ -21,23 +21,21 @@ public class S3Controller {
     private String baseUrl;
 
     // S3 저장
-    @PostMapping("/s3-save")
-    public ResponseEntity<ResultEntity> uploadFile(@RequestBody String path) {
+    @PostMapping("/s3-save/{uuid}")
+    public ResponseEntity<ResultEntity> uploadFile(@RequestBody String path, @PathVariable String uuid) {
         try {
             File file = new File(path + "/chatGPTDto.json");
-            String s3Url = s3Service.upload(file, "static");
+            String s3Url = s3Service.upload(file, "static", uuid);
 
             DiagnosisDto diagnosisDto = new DiagnosisDto();
             diagnosisDto.setDiagLink(s3Url);
 
-            diagnosisService.saveDiagnosis(diagnosisDto);
+            diagnosisService.saveDiagnosis(diagnosisDto, uuid);
 
         } catch (Exception e) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * id 타입 변경해야함*/
     // S3에서 객체 url 조회
     @GetMapping("/s3-find/{id}")
     public ResultEntity<ChatGPTDto> findS3(@PathVariable("id") String id) {
