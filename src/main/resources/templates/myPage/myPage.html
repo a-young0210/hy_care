@@ -28,19 +28,23 @@
             flex-shrink: 0;
             background-color: rgba(255, 255, 255, 1);
         }
-        .v23_273 {
-            width: 100%;
-            height: 541px;
-            background: rgba(255,255,255,0);
-            opacity: 1;
+        .table-class {
+            width: 86%;
             position: absolute;
             top: 162px;
             left: 100px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid black;
+            border-collapse: separate;
+        }
+        .table-header {
+            text-align: center;
+        }
+        tr {
+            height : 40px;
+        }
+        td {
+            text-align: center;
         }
         .v23_274 {
             width: 100%;
@@ -54,43 +58,6 @@
             border-top-right-radius: 10px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            overflow: hidden;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
-        }
-        .name {
-            color: #fff;
         }
         .search-div {
             width: 600px;
@@ -163,6 +130,7 @@
         }
 
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
@@ -170,75 +138,98 @@
 <div>
     <div class="frame-container">
         <div class="frame-frame">
-            <div class="v23_273">
-                <div class="v23_274">
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                </div>
-            </div>
+            <table class="table-class" id="doctor-infotbl">
+                <tr class="table-header">
+                    <td width="50%">이름</td>
+                    <td width="50%">날짜</td>
+                </tr>
+            </table>
+<!--            <div class="v23_273">-->
+<!--                <div class="v23_274">-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                    <div class="name"></div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
 </div>
-
 <th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
-</body>
+
+<script th:src="@{/common/common.ajax.js}"></script>
 <script>
 
-    // 새로운 div 요소를 생성합니다.
-    var newDiv = document.createElement("div");
-    newDiv.classList.add("search-div");
+    // 새로운 div 요소를 생성
+    var newDiv = $("<div>").addClass("search-div");
+    var table = document.getElementById("doctor-infotbl");
 
-    // 새로운 div 요소 내에 다른 요소들을 추가합니다.
-    newDiv.innerHTML = `
+    // 새로운 div 요소 내에 다른 요소들을 추가
+    newDiv.html(`
     <form>
         <div class="v23_300">
             <select class="select-search" id="select-search">
                 <option value="all" selected>전체</option>
+                <option value="patient-name">환자 이름</option>
                 <option value="date">기간</option>
-                <option value="doctor-name">주치의</option>
             </select>
             <input type="text" class="search-text-box" id="search-text-box">
-            <button class="search-btn">
-            <img src="templates/image/search-icon.png" />
-            <div class="v57_709"></div>
-        </button>
+            <button class="search-btn" id="search-btn">
+                <img src="templates/image/search-icon.png" />
+                <div class="v57_709"></div>
+            </button>
         </div>
     </form>
-
-`;
+`);
 
     // header-navbar 요소에 새로 생성한 div 요소를 추가
-    var headerNavbar = document.getElementById("header-navbar");
-    headerNavbar.appendChild(newDiv);
+    $("#header-navbar").append(newDiv);
 
     // select-search 옵션 값 가지고오기
-    var selectBox = document.getElementById("select-search");
-    var selectedValue
-    selectBox.addEventListener("change", function() {
-        selectedValue = selectBox.value;
+    $("#select-search").change(function() {
+        var selectedValue = $(this).val();
 
         // select 박스 값에 따라 input type 변경
-        if(selectedValue == "date") {
-            document.getElementById("search-text-box").type = "date";
-        } else {
-            document.getElementById("search-text-box").type = "text";
-        }
+        $("#search-text-box").attr("type", selectedValue === "date" ? "date" : "text");
     });
 
 
+    // 진료 기록 조회 API 호출
+    $(document).ready(function() {
+        ajaxJsonCall('/member/find-diag/3', null, function(data) {
+            console.log(data.data);
+            if(data.code == "0000" && data.data.length > 0) {
+                // 데이터 개수만큼 테이블에 추가
+                for (var i = 0; i < data.data.length; i++) {
+                    var row = table.insertRow(-1);
 
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
 
+                    // Set the cell values based on the data
+                    cell1.innerHTML = data.data[i].patientName;
+                    cell2.innerHTML = data.data[i].diagTime;
+                }
+            }
+        });
+    });
+
+    // 검색
+    $("#search-btn").click(function() {
+        var searchType = $('#select-search').val();
+
+    });
 
 
 </script>
+</body>
+
 </html>

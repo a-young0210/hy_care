@@ -107,8 +107,9 @@ public class MemberController {
     }
 
     // 진료 기록 조회
-    @GetMapping("/find-dig/{id}")
+    @GetMapping("/find-diag/{id}")
     public ResultEntity<List<DiagnosisDto>> findDiag(@PathVariable int id) {
+        log.info("Member diagnosis find");
         MemberDto memberDto = memberService.findById(id);
         List<DiagnosisDto> DiagnosisList = new ArrayList<>();
         for(String diagId : memberDto.getDiagId()) {

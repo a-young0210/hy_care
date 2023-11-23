@@ -41,6 +41,8 @@ public class DiagnosisService {
                 .diagLink(diagnosis.get().getDiagLink())
                 .consultationSheet(diagnosis.get().getConsultationSheet())
                 .diagTime(diagnosis.get().getDiagTime())
+                .doctorName(diagnosis.get().getDoctorName())
+                .patientName(diagnosis.get().getPatientName())
                 .build();
 
         return hycareDto;

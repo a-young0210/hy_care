@@ -32,6 +32,9 @@ public class S3Controller {
 
             diagnosisService.saveDiagnosis(diagnosisDto, uuid);
 
+            /**
+             * Diagnosis DB 저장 완료 -> member diag_id 추가를 위해 api 호출*/
+
         } catch (Exception e) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
         return new ResponseEntity(HttpStatus.OK);
     }
