@@ -21,11 +21,11 @@ public class WebController {
 
     @RequestMapping("/my-page")
     public String myPageWeb(Model model) {
-        return "myPage/myPage.html";
+        return "myPage/doctorMyInfo.html";
     }
 
     @RequestMapping("/doctor-login")
     public String doctorLoginWeb(Model model) {
-        return "login/doctorLogin.html";
+        return "login/login.html";
     }
 }
