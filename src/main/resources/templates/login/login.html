@@ -26,9 +26,10 @@
         function handleCredentialResponse(response){
             console.log("encoded jwt id token: "+response.credential);
             window.identity = parseJwt(response.credential);
-            document.getElementById("welcome").innerHTML = window.identity.email;
+            console.log(window.identity)
+            // document.getElementById("welcome").innerHTML = window.identity.email;
             var email = window.identity.email
-            var redirect_url = "http://localhost/api/auth/login/complete/" + email;
+            var redirect_url = "http://localhost:8000/api/auth/login/complete/" + {email};
             console.log(redirect_url)
             var payload = {
                 "email": email,
