@@ -141,6 +141,24 @@ public class MemberController {
         return new ResultEntity<>(DiagnosisList);
     }
 
+    // 환자 이름으로 검색
+    @GetMapping("/search-doctor/{id}")
+    public ResultEntity<List<DiagnosisDto>> searchByDoctorName(@PathVariable int id, @RequestParam String doctorName) {
+        log.info("Search by doctor name");
+        MemberDto memberDto = memberService.findById(id);
+        List<DiagnosisDto> DiagnosisList = new ArrayList<>();
+        if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
+            for (String diagId : memberDto.getDiagId()) {
+                DiagnosisDto diagnosisDto = diagnosisService.findData(diagId);
+                if(diagnosisDto.getDoctorName() != null && diagnosisDto.getDoctorName().contains(doctorName)) {
+                    DiagnosisList.add(diagnosisDto);
+                }
+            }
+        }
+
+        return new ResultEntity<>(DiagnosisList);
+    }
+
     // 기간으로 검색
     @GetMapping("/search-date/{id}")
     public ResultEntity<List<DiagnosisDto>> searchByDate(@PathVariable int id, @RequestParam String date1, String date2) {
