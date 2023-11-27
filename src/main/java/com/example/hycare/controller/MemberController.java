@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -112,10 +115,55 @@ public class MemberController {
         log.info("Member diagnosis find");
         MemberDto memberDto = memberService.findById(id);
         List<DiagnosisDto> DiagnosisList = new ArrayList<>();
-        for(String diagId : memberDto.getDiagId()) {
-            DiagnosisList.add(diagnosisService.findData(diagId));
+        if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
+            for(String diagId : memberDto.getDiagId()) {
+                DiagnosisList.add(diagnosisService.findData(diagId));
+            }
+        }
+        return new ResultEntity<>(DiagnosisList);
+    }
+
+    // 환자 이름으로 검색
+    @GetMapping("/search-patient/{id}")
+    public ResultEntity<List<DiagnosisDto>> searchByPatientName(@PathVariable int id, @RequestParam String patientName) {
+        log.info("Search by patient name");
+        MemberDto memberDto = memberService.findById(id);
+        List<DiagnosisDto> DiagnosisList = new ArrayList<>();
+        if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
+            for (String diagId : memberDto.getDiagId()) {
+                DiagnosisDto diagnosisDto = diagnosisService.findData(diagId);
+                if(diagnosisDto.getPatientName() != null && diagnosisDto.getPatientName().contains(patientName)) {
+                    DiagnosisList.add(diagnosisDto);
+                }
+            }
         }
 
+        return new ResultEntity<>(DiagnosisList);
+    }
+
+    // 기간으로 검색
+    @GetMapping("/search-date/{id}")
+    public ResultEntity<List<DiagnosisDto>> searchByDate(@PathVariable int id, @RequestParam String date1, String date2) {
+        log.info("Search by patient name");
+        MemberDto memberDto = memberService.findById(id);
+        List<DiagnosisDto> DiagnosisList = new ArrayList<>();
+        if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
+            for (String diagId : memberDto.getDiagId()) {
+                DiagnosisDto diagnosisDto = diagnosisService.findData(diagId);
+                if(diagnosisDto.getDiagTime() != null) {
+                    // SimpleDateFormat을 사용하여 timestamp를 문자열로 변환
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String formatDiagTime = dateFormat.format(diagnosisDto.getDiagTime());
+
+                    // 날짜 비교
+                    int resultDate1 = formatDiagTime.compareTo(date1);
+                    int resultDate2 = formatDiagTime.compareTo(date2);
+                    if(resultDate1 >= 0 && resultDate2 <= 0) {  // 검색하고자 하는 기간 안에 있으면 list에 추가
+                        DiagnosisList.add(diagnosisDto);
+                    }
+                }
+            }
+        }
         return new ResultEntity<>(DiagnosisList);
     }
 

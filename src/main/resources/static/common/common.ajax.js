@@ -45,8 +45,7 @@ var ajaxJsonCall = function(url, param, successCallback, errorCallback, headerOp
                     }
                 }
             } catch (e) {
-                //alert(e.message, function(){ hideLoading() });
-                hideLoading();
+                alert(e.message);
             }
         }
         ,error : function(xhr, status, error) {

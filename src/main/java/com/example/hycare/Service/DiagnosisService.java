@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
@@ -36,15 +37,18 @@ public class DiagnosisService {
     public DiagnosisDto findData(String id) {
         Optional<Diagnosis> diagnosis = diagnosisRepository.findById(id);
 
-        DiagnosisDto hycareDto = DiagnosisDto.builder()
-                .diagId(diagnosis.get().getDiagId())
-                .diagLink(diagnosis.get().getDiagLink())
-                .consultationSheet(diagnosis.get().getConsultationSheet())
-                .diagTime(diagnosis.get().getDiagTime())
-                .doctorName(diagnosis.get().getDoctorName())
-                .patientName(diagnosis.get().getPatientName())
-                .build();
+        if(!diagnosis.isEmpty()) {
+            DiagnosisDto hycareDto = DiagnosisDto.builder()
+                    .diagId(diagnosis.get().getDiagId())
+                    .diagLink(diagnosis.get().getDiagLink())
+                    .consultationSheet(diagnosis.get().getConsultationSheet())
+                    .diagTime(diagnosis.get().getDiagTime())
+                    .doctorName(diagnosis.get().getDoctorName())
+                    .patientName(diagnosis.get().getPatientName())
+                    .build();
+            return hycareDto;
+        }
 
-        return hycareDto;
+        return null;
     }
 }
