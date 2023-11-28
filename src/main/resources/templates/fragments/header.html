@@ -6,71 +6,53 @@
         .header-navbar {
             top: 0px;
             left: 0px;
-            width: 1530px;
-            height: 90px;
-            display: flex;
+            width: 100%;
+            height: 100px;
             position: absolute;
-            align-items: flex-start;
-            flex-shrink: 1;
             background-color: rgba(50, 205, 50, 1);
         }
-        .login-join {
-            top: 33px;
-            left: 1289px;
-            color: rgba(255, 255, 255, 1);
-            height: auto;
-            position: absolute;
-            font-size: 18px;
-            font-style: Bold;
-            text-align: center;
-            font-family: DM Sans;
-            font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            text-decoration: none;
-            border: 0;
+        .navbar-div {
+            top: 28px;
+            left: 35px;
+            width: 95%;
+            height: 50px;
+            position: relative;
+            display: flex;
             background-color: transparent;
         }
-        .hycare {
-            top: 22.272705078125px;
-            left: 127.2987060546875px;
+        .div1 {
+            flex: 1;
+        }
+        .logo {
             color: rgba(255, 255, 255, 1);
-            width: 182px;
-            height: auto;
-            position: absolute;
             font-size: 36px;
-            font-style: Medium;
+            font-style: inherit;
             text-align: left;
             font-family: DM Sans;
-            font-weight: 500;
-            line-height: normal;
-            font-stretch: normal;
-            text-decoration: none;
+            font-weight: 700;
+            flex: 1;
             border: 0;
             background-color: transparent;
         }
-        .frame-menu {
-            top: 33px;
-            left: 494px;
-            width: 596px;
-            height: 42px;
-            display: flex;
-            position: absolute;
-            align-items: flex-start;
-            flex-shrink: 1;
-        }
         .consult {
-            color: white;
-            height: auto;
-            position: absolute;
-            font-size: 24px;
-            font-style: Bold;
+            color: rgba(255, 255, 255, 1);
+            font-size: 20px;
+            font-style: inherit;
             text-align: center;
             font-family: DM Sans;
             font-weight: 700;
-            line-height: normal;
-            font-stretch: normal;
-            text-decoration: none;
+            flex: 1;
+            border: 0;
+            background-color: transparent;
+        }
+        .login-join {
+            color: rgba(255, 255, 255, 1);
+            font-size: 20px;
+            font-style: inherit;
+            text-align: right;
+            font-family: DM Sans;
+            font-weight: 700;
+            flex: 1;
             border: 0;
             background-color: transparent;
         }
@@ -78,11 +60,13 @@
 </head>
 <body>
 <div class="header-navbar" id="header-navbar">
-    <button class="hycare" onclick="location.href='/'"><span>Hy-care</span></button>
-    <div class="frame-menu">
-        <button class="consult" onclick="location.href='/consult'"><span id="consult">화상진료</span></button>
+    <div class="navbar-div" id="navbar-div">
+        <button class="logo" onclick="location.href='/'"><span>Hy-care</span></button>
+        <div class="div1"> </div>
+        <button class="consult" onclick="location.href='/consult'"><span>화상진료</span></button>
+        <div class="div1"> </div>
+        <button class="login-join" onclick="location.href='/my-page'"><span>로그인/회원가입</span></button>
     </div>
-    <button class="login-join" onclick="location.href='/my-page'"><span>로그인/회원가입</span></button>
 </div>
 </body>
 <script>
