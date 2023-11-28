@@ -32,7 +32,7 @@
             console.log(window.identity)
             // document.getElementById("welcome").innerHTML = window.identity.email;
             var email = window.identity.email
-            var redirect_url = "http://localhost:8080/api/auth/login/complete/" + email + "?loginDiv=" + loginDiv;
+            var redirect_url = "http://localhost:8080/api/auth/login/complete?email=" + email + "&loginDiv=" + loginDiv;
             console.log(redirect_url)
             var payload = {
                 "email": email,

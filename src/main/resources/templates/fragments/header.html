@@ -75,6 +75,7 @@
             background-color: transparent;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="header-navbar" id="header-navbar">
@@ -82,9 +83,10 @@
     <div class="frame-menu">
         <button class="consult" onclick="location.href='/consult'"><span id="consult">화상진료</span></button>
     </div>
-    <button class="login-join" onclick="location.href='/my-page'"><span>로그인/회원가입</span></button>
+    <button class="login-join" id="login-btn"><span id="login-join">로그인/회원가입</span></button>
 </div>
 </body>
+<script th:src="@{/common/common.ajax.js}"></script>
 <script>
 
     // 마우스 hover 이벤트
@@ -94,5 +96,24 @@
     document.querySelector('.consult').addEventListener('mouseleave', () => {
         document.getElementById("consult").style.color="white"
     });
+
+    ajaxJsonCall('/getSessionValues', null, function(data) {
+        console.log("session : ", data);
+        if(data.email != null) {
+            $('#login-join').text("로그아웃");
+        } else {
+            $('#login-join').text("로그인/회원가입");
+        }
+    });
+
+    $("#login-btn").click(function() {
+        if($('#login-join').text() == "로그아웃") {
+            console.log("logout btn click event");
+            ajaxJsonCall('/session-remove', null, function(data) {
+                console.log("logout");
+            });
+        }
+    });
+
 </script>
 </html>
