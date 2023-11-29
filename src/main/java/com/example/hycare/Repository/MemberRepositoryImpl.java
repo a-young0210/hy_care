@@ -13,11 +13,12 @@ import java.util.List;
 public class MemberRepositoryImpl implements MemberRepositoryCustom{
     private final EntityManager em;
 
-    public Member findByEmail(String email) {
+    public Member findByEmail(String email, String isDoctor) {
         Member member = null;
         try {
-            TypedQuery<Member> query = em.createQuery("SELECT m from Member m where m.email = :email", Member.class)
-                    .setParameter("email", email);
+            TypedQuery<Member> query = em.createQuery("SELECT m from Member m where m.email = :email and m.isDoctor = :isDoctor", Member.class)
+                    .setParameter("email", email)
+                    .setParameter("isDoctor", isDoctor);
             List<Member> results = query.getResultList();
 
             if (!results.isEmpty()) {

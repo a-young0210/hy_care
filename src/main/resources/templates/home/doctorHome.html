@@ -75,9 +75,8 @@
 <div>
   <div class="div1">
     <div class="div2">
-      <div class="helloDiv">
-        <span class="helloText">OO님 안녕하세요.<br>진료가 필요한 환자가 기다리고있습니다.</span>
-        <span class="info">상단의 ‘화상진료' 메뉴를 통해 환자를 진료할 수 있습니다.</span>
+      <div class="helloDiv" id="helloDiv">
+
       </div>
     </div>
   </div>
@@ -87,10 +86,6 @@
 </body>
 <script>
 
-  function consultStart() {
-    console.log('상담 시작 버튼 클릭')
-  }
-
   // 마우스 hover 이벤트
   document.querySelector('.consult').addEventListener('mouseenter', () => {
     document.getElementById("consult").style.color="black"
@@ -98,5 +93,22 @@
   document.querySelector('.consult').addEventListener('mouseleave', () => {
     document.getElementById("consult").style.color="white"
   });
+
+  // 세션 확인
+  ajaxJsonCall('/getSessionValues', null, function(data) {
+    console.log("session : ", data);
+    if(data.email != null) {
+      var name = data.email.split("@");
+      // 요소 추가
+      var newDiv = $("<div>").addClass("search-div");
+      newDiv.html(`
+        <span class="helloText"> ${name[0]}님 안녕하세요.<br>진료가 필요한 환자가 기다리고있습니다.</span>
+              <span class="info">상단의 ‘화상진료' 메뉴를 통해 환자를 진료할 수 있습니다.</span>
+       `);
+      $("#helloDiv").append(newDiv);
+    }
+  });
+
+
 </script>
 </html>
