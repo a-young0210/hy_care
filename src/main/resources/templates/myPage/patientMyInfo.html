@@ -210,7 +210,6 @@
 
     // 진료 기록 조회 API 호출
     ajaxJsonCall('/member/find-diag/3', null, function(data) {
-        console.log(data.data);
         if(data.code == "0000" && data.data.length > 0) {
             // 데이터 개수만큼 테이블에 추가
             for (var i = 0; i < data.data.length; i++) {
@@ -256,7 +255,6 @@
                 const param = {};
                 param["doctorName"] = searchText;
                 ajaxJsonCall('/member/search-doctor/3', param, function(data) {
-                    console.log(data.data);
                     if(data.code == "0000" && data.data.length > 0) {
                         // 헤더를 제외한 모든 행 삭제
                         for (var i = rowCount - 1; i > 0; i--) {
@@ -281,8 +279,6 @@
             }
         } else if(searchType=="date") {   // 진료 날짜 검색하는 경우
             var searchText2 = $('#search-text-box2').val();
-            console.log(searchText);
-            console.log(searchText2);
             if(searchText == '' || searchText == null || searchText2 == '' || searchText2 == null) {
                 alert('기간을 선택주세요.');
             } else {
@@ -290,7 +286,6 @@
                 params["date1"] = searchText;
                 params["date2"] = searchText2;
                 ajaxJsonCall('/member/search-date/3', params, function(data) {
-                    console.log(data.data);
                     if(data.code == "0000" && data.data.length > 0) {
                         // 헤더를 제외한 모든 행 삭제
                         for (var i = rowCount - 1; i > 0; i--) {
@@ -316,7 +311,6 @@
 
         } else {    // 전체인 경우
             ajaxJsonCall('/member/find-diag/3', null, function(data) {
-                console.log(data.data);
                 if(data.code == "0000" && data.data.length > 0) {
                     // 헤더를 제외한 모든 행 삭제
                     for (var i = rowCount - 1; i > 0; i--) {

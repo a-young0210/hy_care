@@ -26,18 +26,13 @@ public class MemberController {
     private final MemberService memberService;
     private final DiagnosisService diagnosisService;
 
-    @Value("${server.host.api}")
-    private String baseUrl;
-
     // 회원가입 및 로그인
     @PostMapping("/login")
     public ResultEntity memLogin(@RequestBody MemberDto memberDto) {
         ResultEntity result = new ResultEntity();
         try {
-            if(memValid(memberDto.getEmail())) {
+            if(memValid(memberDto.getEmail(), memberDto.getIsDoctor())) {
                 // 회원이 존재하지 않으면 DB 저장
-                String[] email = memberDto.getEmail().split("@");
-                memberDto.setMemName(email[0]);
                 memberService.saveMember(memberDto);
 
                 // 회원가입 및 로그인 성공 반환
@@ -58,26 +53,26 @@ public class MemberController {
     }
 
     // email로 회원 찾기
-    @GetMapping("/find-email/{email}")
-    public ResultEntity findMemByEmail(@PathVariable("email") String email) {
-        ResultEntity result = new ResultEntity(ApiResult.SUCCESSS);
-        try {
-            MemberDto member = memberService.findByEmail(email);
-            if(member.getEmail() == null) { // email에 해당하는 회원이 없는 경우
-               result.setCode(ApiResult.USER_NOT_FOUND.getCode());
-               result.setMessage(ApiResult.USER_NOT_FOUND.getMessage());
-               result.setData(null);
-                log.warn("Member not found");
-                return result;
-            }
-            result.setData(member);
-        } catch (Exception e) {
-            log.error("Find member fail");
-            result = new ResultEntity(e);
-        }
-        log.info("Find member success");
-        return result;
-    }
+//    @GetMapping("/find-email/{email}")
+//    public ResultEntity findMemByEmail(@PathVariable("email") String email) {
+//        ResultEntity result = new ResultEntity(ApiResult.SUCCESSS);
+//        try {
+//            MemberDto member = memberService.findByEmail(email);
+//            if(member.getEmail() == null) { // email에 해당하는 회원이 없는 경우
+//               result.setCode(ApiResult.USER_NOT_FOUND.getCode());
+//               result.setMessage(ApiResult.USER_NOT_FOUND.getMessage());
+//               result.setData(null);
+//                log.warn("Member not found");
+//                return result;
+//            }
+//            result.setData(member);
+//        } catch (Exception e) {
+//            log.error("Find member fail");
+//            result = new ResultEntity(e);
+//        }
+//        log.info("Find member success");
+//        return result;
+//    }
 
     // 진료 완료 -> member의 diagId 업데이트
     @PostMapping("update/{id}")
@@ -186,19 +181,13 @@ public class MemberController {
     }
 
     // 회원이 존재하는지 validation
-    public Boolean memValid(String email) {
+    public Boolean memValid(String email, String dtoIsDoctor) {
         log.info("Find Member");
-        MemberDto member = memberService.findByEmail(email);
-        if(member.getEmail() == null) {   // 회원 존재X
+        String isDoctor = dtoIsDoctor.equals("0") ? "D" : "P";
+        MemberDto member = memberService.findByEmail(email, isDoctor);
+        if(member.getEmail() == null || !member.getIsDoctor().equals(isDoctor)) {   // 회원 존재X
             return true;
         }
         return false;
-    }
-
-    @GetMapping("find-member")
-    @Cacheable(value = "memberCache")
-    public MemberDto findMember(@RequestBody String email) {
-        MemberDto member = memberService.findByEmail(email);
-        return member;
     }
 }

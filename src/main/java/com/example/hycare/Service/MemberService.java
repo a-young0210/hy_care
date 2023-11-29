@@ -31,10 +31,10 @@ public class MemberService {
 
     }
 
-    public MemberDto findByEmail(String email) {
+    public MemberDto findByEmail(String email, String isDoctor) {
         log.info("findByEmail Service");
         MemberDto memberDto = new MemberDto();
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmail(email, isDoctor);
         List<String> diagId = new ArrayList<>();
         if(member != null) {
             if(member.getEmail() != null || !member.getEmail().isEmpty()) {

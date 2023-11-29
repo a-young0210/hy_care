@@ -9,6 +9,8 @@
             width: 100%;
             height: 100px;
             position: absolute;
+            align-items: flex-start;
+            flex-shrink: 1;
             background-color: rgba(50, 205, 50, 1);
         }
         .navbar-div {
@@ -57,6 +59,7 @@
             background-color: transparent;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="header-navbar" id="header-navbar">
@@ -65,10 +68,11 @@
         <div class="div1"> </div>
         <button class="consult" onclick="location.href='/consult'"><span>화상진료</span></button>
         <div class="div1"> </div>
-        <button class="login-join" onclick="location.href='/my-page'"><span>로그인/회원가입</span></button>
+        <button class="login-join" id="login-btn"><span id="login-join">로그인/회원가입</span></button>
     </div>
 </div>
 </body>
+<script th:src="@{/common/common.ajax.js}"></script>
 <script>
 
     // 마우스 hover 이벤트
@@ -78,5 +82,22 @@
     document.querySelector('.consult').addEventListener('mouseleave', () => {
         document.getElementById("consult").style.color="white"
     });
+
+    // 세션 확인
+    ajaxJsonCall('/getSessionValues', null, function(data) {
+        console.log("session : ", data);
+        if(data.email != null) {    // 세션 존재(로그인 상태)
+            $('#login-join').text("로그아웃");
+        } else {    // 세션 존재X(로그아웃 상태)
+            $('#login-join').text("로그인/회원가입");
+        }
+    });
+
+    $("#login-btn").click(function() {
+        if($('#login-join').text() == "로그아웃") { // 텍스트가 로그아웃인 경우(로그인 상태) 세션 삭제
+            location.href='/session-remove';
+        }
+    });
+
 </script>
 </html>

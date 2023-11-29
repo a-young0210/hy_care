@@ -90,13 +90,13 @@
 </body>
 <script>
     function doctorLogin() {
-        console.log('의사 로그인')
-        location.href='/doctor-login'
+        localStorage.setItem('key','0');
+        location.href='/login';
     }
 
-    function patientLogin() {
-        console.log('환자 로그인')
-        location.href='/patient-login'
+    function paientLogin() {
+        localStorage.setItem('key','1');
+        location.href='/login';
     }
 </script>
 </html>
