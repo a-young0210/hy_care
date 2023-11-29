@@ -62,12 +62,12 @@ public class WebController {
         return "/home/patientHome.html";
     }
 
-    @GetMapping("/session-remove")
+    @RequestMapping("/session-remove")
     public String sessionRemove(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
         log.info("session remove success");
-        return "redirect:/";
+        return "home/home.html";
     }
 
     @GetMapping("/getSessionValues")

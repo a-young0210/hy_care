@@ -109,9 +109,7 @@
     $("#login-btn").click(function() {
         if($('#login-join').text() == "로그아웃") {
             console.log("logout btn click event");
-            ajaxJsonCall('/session-remove', null, function(data) {
-                console.log("logout");
-            });
+            location.href='/session-remove';
         }
     });
 
