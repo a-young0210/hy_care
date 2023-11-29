@@ -6,6 +6,7 @@ import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.dto.MemberDto;
 import com.example.hycare.entity.ApiResult;
 import com.example.hycare.entity.ResultEntity;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,10 +106,11 @@ public class MemberController {
     }
 
     // 진료 기록 조회
-    @GetMapping("/find-diag/{id}")
-    public ResultEntity<List<DiagnosisDto>> findDiag(@PathVariable int id) {
+    @GetMapping("/find-diag/{email}")
+    public ResultEntity<List<DiagnosisDto>> findDiag(@PathVariable String email, @RequestParam String loginDiv) {
         log.info("Member diagnosis find");
-        MemberDto memberDto = memberService.findById(id);
+        String isDoctor = loginDiv.equals("0") ? "D" : "P";
+        MemberDto memberDto = memberService.findByEmail(email, isDoctor);
         List<DiagnosisDto> DiagnosisList = new ArrayList<>();
         if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
             for(String diagId : memberDto.getDiagId()) {
