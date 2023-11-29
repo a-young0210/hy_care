@@ -19,36 +19,39 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class WebController {
-    @Value("${server.host.api}")
-    private String baseUrl;
 
+    // 홈화면 리다이렉트
     @RequestMapping("/")
     public String mainWeb(Model model, HttpServletRequest request) {
         // 세션 유무/ loginDiv 값에 따라 적절한 화면 return
         HttpSession session = request.getSession();
-        if (session.getAttribute("email") != null && session.getAttribute("loginDiv").equals("0")) {
+        if (session.getAttribute("email") != null && session.getAttribute("loginDiv").equals("0")) {    // 의사인 경우
             return "home/doctorHome.html";
-        } else if (session.getAttribute("email") != null && session.getAttribute("loginDiv").equals("1")) {
+        } else if (session.getAttribute("email") != null && session.getAttribute("loginDiv").equals("1")) { // 환자인 경우
             return "home/patientHome.html";
         }
         return "home/home.html";
     }
 
+    // 상담 화면 리다이렉트
     @RequestMapping("/consult")
     public String consultWeb(Model model) {
         return "consult/consultStart.html";
     }
 
+    // 의사 마이페이지 리다이렉트
     @RequestMapping("/my-page")
     public String myPageWeb(Model model) {
         return "myPage/doctorMyInfo.html";
     }
 
+    // 로그인 화면 리다이렉트
     @RequestMapping("/login")
     public String loginWeb(Model model) {
         return "login/login.html";
     }
 
+    // 로그인 성공 화면 리다이렉트
     @RequestMapping("/api/auth/login/complete")
     public String loginGoogleGet(@RequestParam String email, @RequestParam String loginDiv, org.springframework.ui.Model model, HttpServletRequest request) {
 
@@ -56,12 +59,14 @@ public class WebController {
         session.setAttribute("loginDiv", loginDiv);
         session.setAttribute("email", email);
 
-        if(loginDiv == "0" || loginDiv.equals("0")) {
+        if(loginDiv == "0" || loginDiv.equals("0")) {   // 의사인 경우
             return "/home/doctorHome.html";
         }
+        // 환자인 경우
         return "/home/patientHome.html";
     }
 
+    // 로그아웃 (세션 삭제) 리다이렉트
     @RequestMapping("/session-remove")
     public String sessionRemove(HttpServletRequest request) {
         HttpSession session = request.getSession();
