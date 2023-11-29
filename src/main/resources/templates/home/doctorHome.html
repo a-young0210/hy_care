@@ -94,6 +94,7 @@
     document.getElementById("consult").style.color="white"
   });
 
+  // 세션 확인
   ajaxJsonCall('/getSessionValues', null, function(data) {
     console.log("session : ", data);
     if(data.email != null) {

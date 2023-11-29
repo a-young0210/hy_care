@@ -97,18 +97,18 @@
         document.getElementById("consult").style.color="white"
     });
 
+    // 세션 확인
     ajaxJsonCall('/getSessionValues', null, function(data) {
         console.log("session : ", data);
-        if(data.email != null) {
+        if(data.email != null) {    // 세션 존재(로그인 상태)
             $('#login-join').text("로그아웃");
-        } else {
+        } else {    // 세션 존재X(로그아웃 상태)
             $('#login-join').text("로그인/회원가입");
         }
     });
 
     $("#login-btn").click(function() {
-        if($('#login-join').text() == "로그아웃") {
-            console.log("logout btn click event");
+        if($('#login-join').text() == "로그아웃") { // 텍스트가 로그아웃인 경우(로그인 상태) 세션 삭제
             location.href='/session-remove';
         }
     });
