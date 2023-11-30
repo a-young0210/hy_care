@@ -76,13 +76,13 @@ public class MemberController {
 //    }
 
     // 진료 완료 -> member의 diagId 업데이트
-    @PostMapping("update/{id}")
-    public ResultEntity updateDiagId(@PathVariable("id") int id, @RequestBody String diagnosisId) {
+    @PostMapping("update/{diagnosisId}")
+    public ResultEntity updateDiagId(@RequestBody MemberDto member, @PathVariable("diagnosisId")String diagnosisId) {
         ResultEntity result = new ResultEntity(ApiResult.SUCCESSS);
         MemberDto memberDto = new MemberDto();
         List<String> diagIdList = new ArrayList<String>();
         try {
-            memberDto = memberService.findById(id);
+            memberDto = memberService.findByEmail(member.getEmail(), member.getIsDoctor());
             if(memberDto != null) {     // 회원 존재
                 // 기존 diagId에 추가
                 diagIdList.addAll(memberDto.getDiagId());
@@ -121,10 +121,11 @@ public class MemberController {
     }
 
     // 환자 이름으로 검색
-    @GetMapping("/search-patient/{id}")
-    public ResultEntity<List<DiagnosisDto>> searchByPatientName(@PathVariable int id, @RequestParam String patientName) {
+    @GetMapping("/search-patient/{email}")
+    public ResultEntity<List<DiagnosisDto>> searchByPatientName(@PathVariable String email, @RequestParam String patientName, String loginDiv) {
         log.info("Search by patient name");
-        MemberDto memberDto = memberService.findById(id);
+        String isDoctor = loginDiv.equals("0") ? "D" : "P";
+        MemberDto memberDto = memberService.findByEmail(email, isDoctor);
         List<DiagnosisDto> DiagnosisList = new ArrayList<>();
         if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
             for (String diagId : memberDto.getDiagId()) {
@@ -138,11 +139,12 @@ public class MemberController {
         return new ResultEntity<>(DiagnosisList);
     }
 
-    // 환자 이름으로 검색
-    @GetMapping("/search-doctor/{id}")
-    public ResultEntity<List<DiagnosisDto>> searchByDoctorName(@PathVariable int id, @RequestParam String doctorName) {
+    // 의사 이름으로 검색
+    @GetMapping("/search-doctor/{email}")
+    public ResultEntity<List<DiagnosisDto>> searchByDoctorName(@PathVariable String email, @RequestParam String doctorName, String loginDiv) {
         log.info("Search by doctor name");
-        MemberDto memberDto = memberService.findById(id);
+        String isDoctor = loginDiv.equals("0") ? "D" : "P";
+        MemberDto memberDto = memberService.findByEmail(email, isDoctor);
         List<DiagnosisDto> DiagnosisList = new ArrayList<>();
         if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
             for (String diagId : memberDto.getDiagId()) {
@@ -157,10 +159,11 @@ public class MemberController {
     }
 
     // 기간으로 검색
-    @GetMapping("/search-date/{id}")
-    public ResultEntity<List<DiagnosisDto>> searchByDate(@PathVariable int id, @RequestParam String date1, String date2) {
+    @GetMapping("/search-date/{email}")
+    public ResultEntity<List<DiagnosisDto>> searchByDate(@PathVariable String email, @RequestParam String date1, String date2, String loginDiv) {
         log.info("Search by patient name");
-        MemberDto memberDto = memberService.findById(id);
+        String isDoctor = loginDiv.equals("0") ? "D" : "P";
+        MemberDto memberDto = memberService.findByEmail(email, isDoctor);
         List<DiagnosisDto> DiagnosisList = new ArrayList<>();
         if (memberDto.getDiagId() != null && !memberDto.getDiagId().isEmpty() && !"<null>".equals(memberDto.getDiagId().get(0))) {
             for (String diagId : memberDto.getDiagId()) {

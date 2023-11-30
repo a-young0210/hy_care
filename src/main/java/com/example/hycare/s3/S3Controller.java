@@ -3,11 +3,13 @@ package com.example.hycare.s3;
 import com.example.hycare.Service.DiagnosisService;
 import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.chatGPT.ChatGPTDto;
+import com.example.hycare.dto.MemberDto;
 import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 
@@ -32,8 +34,21 @@ public class S3Controller {
 
             diagnosisService.saveDiagnosis(diagnosisDto, uuid);
 
-            /**
-             * Diagnosis DB 저장 완료 -> member diag_id 추가를 위해 api 호출*/
+            // memberDto 세팅
+            MemberDto memberDto = new MemberDto();
+            memberDto.setEmail("이메일");
+            memberDto.setIsDoctor("P");
+            // member diagId 업데이트를 위한 API 호출
+            String url = baseUrl + "/member/update/" + uuid;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity httpEntity = new HttpEntity<>(memberDto, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<ResultEntity> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    httpEntity,
+                    ResultEntity.class);
 
         } catch (Exception e) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
         return new ResponseEntity(HttpStatus.OK);
