@@ -3,133 +3,91 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <meta charset="UTF-8">
     <title>Hy-care</title>
     <style>
-        body {
-            font-size: 14px;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
         .frame-container {
+            top: 100px;
+            left: 0px;
             width: 100%;
-            display: flex;
-            overflow: auto;
-            min-height: 100vh;
+            height: 87%;
+            position: absolute;
             align-items: center;
-            flex-direction: column;
-        }
-        .frame-frame {
-            width: 100%;
-            height: 795px;
-            display: flex;
-            overflow: hidden;
-            align-items: flex-start;
-            flex-shrink: 0;
-            background-color: rgba(255, 255, 255, 1);
         }
         .table-class {
-            width: 86%;
+            top: 20%;
+            left: 10%;
+            width: 80%;
             position: absolute;
-            top: 162px;
-            left: 100px;
-            border-radius: 10px;
-            border: 1px solid black;
-            border-collapse: separate;
-        }
-        .table-header {
-            text-align: center;
+            border-radius: 8px;
+            border: 1px solid rgba(54,188,67,1);
         }
         tr {
             height : 40px;
-        }
-        td {
             text-align: center;
         }
-        .v23_274 {
-            width: 100%;
-            height: 440px;
-            background: rgba(54,54,54,0);
-            opacity: 1;
-            position: relative;
-            top: 0px;
-            left: 0px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
+        .table-header-text {
+            text-align: center;
+            font-weight: Bold;
+            width : 50%;
         }
         .search-div {
-            width: 600px;
-            height: 46px;
-            background: url("../images/v421_250.png");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            opacity: 1;
-            position: absolute;
-            top: 24px;
-            left: 630px;
-            overflow: hidden;
-        }
-        .v23_300 {
-            width: 600px;
-            height: 46px;
-            background: rgba(255,255,255,1);
-            opacity: 1;
+            left: 32%;
+            top: 8%;
+            width: 35%;
+            height: 6%;
             position: relative;
-            top: 0px;
-            left: 0px;
+            display: flex;
             border: 1px solid rgba(54,188,67,1);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            overflow: hidden;
-        }
-        .search-text-box, .search-text-box2 {
-            border: none;
-            height: 38px;
-            display: inline-block;
-        }
-
-        .search-text-box2 {
-            width: 200px;  /* 조절 가능한 추가적인 input의 너비 설정 */
-        }
-        .search-btn {
-            width: 33px;
-            height: 30px;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            opacity: 1;
-            position: absolute;
-            top: 7px;
-            left: 547px;
-            overflow: hidden;
-            border: none;
-        }
-        .v57_709 {
-            width: 33px;
-            height: 30px;
-            background: rgba(0,0,0,1);
-            opacity: 1;
-            position: relative;
-            top: 0px;
-            left: 0px;
+            border-radius: 5px;
         }
         .select-search {
-            width: 152px;
-            height: 46px;
-            background: rgba(255,255,255,0);
-            opacity: 1;
-            position: relative;
-            top: 0px;
-            left: 0px;
-            border: 1px solid rgba(54,188,67,1);
-            border-top-left-radius: 20px;
-            border-bottom-left-radius: 20px;
-            overflow: hidden;
+            width: 25%;
+            height: 100%;
+            position: absolute;
+            text-align: center;
+            flex: 0.3;
+            border: 0px;
+            border-right: 1px solid rgba(54,188,67,1);
+        }
+        .search-box {
+            left: 28%;
+            width: 60%;
+            height: 90%;
+            flex: 1;
+            position: absolute;
+        }
+        .search-text-box {
+            width: 100%;
+            height: 100%;
+            text-align: right;
+            position: absolute;
+            border: 0px;
+        }
+        .search-text-box2 {
+            left: 60%;
+            width: 40%;
+            height: 100%;
+            text-align: right;
+            position: absolute;
+            border: 0px;
+        }
+        .search-btn {
+            left: 90%;
+            width: 10%;
+            height: 98%;
+            position: absolute;
+            flex: 0.2;
+            background-color: white;
+            border: 0px;
+        }
+        .search-image {
+            left: 10%;
+            top: 5%;
+            width: 80%;
+            height: 80%;
+            position: absolute;
+            background-color: white;
         }
 
     </style>
@@ -138,18 +96,26 @@
 <body>
 <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
 
-<div>
-    <div class="frame-container">
-        <div class="frame-frame">
-            <table class="table-class" id="doctor-infotbl">
-                <tr class="table-header">
-                    <td width="50%">이름</td>
-                    <td width="50%">날짜</td>
-                </tr>
-            </table>
+<div class="frame-container">
+    <div class="search-div">
+        <select class="select-search" id="select-search">
+            <option value="all" selected>전체</option>
+            <option value="patient-name">의사 이름</option>
+            <option value="date">기간</option>
+        </select>
+        <div class="search-box" id="search-box">
+            <input type="text" class="search-text-box" id="search-text-box">
         </div>
+        <button class="search-btn" id="search-btn" type="button">
+            <img class = "search-image" src="images/search-icon.png"/>
+        </button>
     </div>
+    <table class="table-class" id="doctor-info-table">
+        <td class="table-header-text">이름</td>
+        <td class="table-header-text">날짜</td>
+    </table>
 </div>
+
 <th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 
 <script th:src="@{/common/common.ajax.js}"></script>
@@ -157,28 +123,10 @@
 
     // 새로운 div 요소를 생성
     var newDiv = $("<div>").addClass("search-div");
-    var table = document.getElementById("doctor-infotbl");
+    var table = document.getElementById("doctor-info-table");
 
-    // 새로운 div 요소 내에 다른 요소들을 추가
-    newDiv.html(`
-    <form id="search-form">
-        <div class="v23_300">
-            <select class="select-search" id="select-search">
-                <option value="all" selected>전체</option>
-                <option value="doctor-name">의사 이름</option>
-                <option value="date">기간</option>
-            </select>
-            <input type="text" class="search-text-box" id="search-text-box" style="width: 250px">
-            <button class="search-btn" id="search-btn" type="button">
-                <img src="templates/image/search-icon.png" />
-                <div class="v57_709"></div>
-            </button>
-        </div>
-    </form>
-`);
-
-    // header-navbar 요소에 새로 생성한 div 요소를 추가
-    $("#header-navbar").append(newDiv);
+    // frame-container 요소에 새로 생성한 div 요소를 추가
+    $("#frame-container").append(newDiv);
 
     // select-search 옵션 값 가지고오기
     $("#select-search").change(function() {
@@ -187,23 +135,23 @@
 
         // select 박스 값에 따라 input type 변경
         if(selectedValue === "date") {
-            var spanElement = $("<span id = \"dateHy\" style='display: inline-block; width: 30px; text-align: center'>-</span>");
+            var spanElement = $("<span id = \"dateHy\">-</span>");
             var additionalInput = $("<input>", {
                 type: "date",
                 class: "search-text-box2",
                 id: "search-text-box2"
             });
-            $(".v23_300").append(spanElement);
-            $(".v23_300").append(additionalInput);
-            $("#search-text-box").width('138px');
+            $(".search-box").append(spanElement);
+            $(".search-box").append(additionalInput);
+            $("#search-text-box").width("40%");
             $("#search-text-box").attr("type", "date");
             $("#search-text-box2").attr("type", "date");
         } else {
             // date가 아닌 경우 추가적인 input 요소 제거
             $("#dateHy").remove();
             $("#search-text-box2").remove();
+            $("#search-text-box").width("100%");
             $("#search-text-box").attr("type", "text");
-            $("#search-text-box").width('250px');
         }
     });
 

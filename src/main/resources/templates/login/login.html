@@ -1,11 +1,68 @@
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<title>Hy-care</title>
+<style>
+    .frame-container {
+        top: 100px;
+        left: 0px;
+        width: 100%;
+        height: 87%;
+        position: absolute;
+        align-items: center;
+    }
+    .login-div {
+        top: 30%;
+        left: 40%;
+        width: 20%;
+        height: 50%;
+        position: relative;
+    }
+    .login-text {
+        color: rgba(0,0,0,1);
+        position: absolute;
+        width: 100%;
+        top: 5%;
+        font-weight: Bold;
+        font-size: x-large;
+        text-align: center;
+    }
+    .login-button-div {
+        top: 20%;
+        width: 100%;
+        height: 70%;
+        position: relative;
+        alignment: center;
+    }
+    .google-login-div {
+        top: 30%;
+        width: 100%;
+        height: 30%;
+        position: absolute;
+        alignment: center;
+    }
 
-<head>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-</head>
+</style>
+<body>
+<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+
+<div class="frame-container">
+    <div class="login-div" id="login-div">
+        <span class="login-text">SNS로 로그인하기</span>
+        <div class="login-button-div" id="login-button-div">
+            <div class="google-login-div" id="buttonDiv" th:align="center" th>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
+</body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <div>
     <!-- 구글 로그인 버튼 노출 영역-->
-    <div id="buttonDiv"></div>
 
     <script type="text/javascript">
         window.identity = {};
@@ -64,7 +121,7 @@
             // Display the Sign In With Google Button
             google.accounts.id.renderButton(
                 document.getElementById("buttonDiv"),
-                { theme: 'outline', size: 'small' }
+                { theme: 'outline', size: "large", width: 100}
             );
             google.accounts.id.prompt();
         }
