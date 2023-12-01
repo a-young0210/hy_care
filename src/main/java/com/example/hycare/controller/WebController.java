@@ -40,9 +40,14 @@ public class WebController {
     }
 
     // 의사 마이페이지 리다이렉트
-    @RequestMapping("/my-page")
-    public String myPageWeb(Model model) {
+    @RequestMapping("/doctor-myinfo")
+    public String doctorMyInfoWeb(Model model) {
         return "myPage/doctorMyInfo.html";
+    }
+
+    @RequestMapping("/patient-myinfo")
+    public String patientMyInfoWeb(Model model) {
+        return "myPage/patientMyInfo.html";
     }
 
     // 로그인 화면 리다이렉트
