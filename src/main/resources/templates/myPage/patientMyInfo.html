@@ -158,7 +158,6 @@
 
     // 세션 조회
     ajaxJsonCall('/getSessionValues', null, function(data) {
-        console.log("data : ", data);
         session = data;
         if(data.email != null) {    // 세션 존재(로그인 상태)
             // 진료 기록 조회 API 호출
