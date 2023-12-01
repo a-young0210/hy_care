@@ -30,34 +30,34 @@ public class WebController {
         // 세션 유무/ loginDiv 값에 따라 적절한 화면 return
         HttpSession session = request.getSession();
         if (session.getAttribute("email") != null && session.getAttribute("loginDiv").equals("0")) {    // 의사인 경우
-            return "home/doctorHome.html";
+            return "/home/doctorHome.html";
         } else if (session.getAttribute("email") != null && session.getAttribute("loginDiv").equals("1")) { // 환자인 경우
-            return "home/patientHome.html";
+            return "/home/patientHome.html";
         }
-        return "home/home.html";
+        return "/home/home.html";
     }
 
     // 상담 화면 리다이렉트
     @RequestMapping("/consult")
     public String consultWeb(Model model) {
-        return "consult/consultStart.html";
+        return "/consult/consultStart.html";
     }
 
     // 의사 마이페이지 리다이렉트
     @RequestMapping("/doctor-myinfo")
     public String doctorMyInfoWeb(Model model) {
-        return "myPage/doctorMyInfo.html";
+        return "/myPage/doctorMyInfo.html";
     }
 
     @RequestMapping("/patient-myinfo")
     public String patientMyInfoWeb(Model model) {
-        return "myPage/patientMyInfo.html";
+        return "/myPage/patientMyInfo.html";
     }
 
     // 로그인 화면 리다이렉트
     @RequestMapping("/login")
     public String loginWeb(Model model) {
-        return "login/login.html";
+        return "/login/login.html";
     }
 
     // 로그인 성공 화면 리다이렉트
@@ -81,7 +81,7 @@ public class WebController {
         HttpSession session = request.getSession();
         session.invalidate();
         log.info("session remove success");
-        return "home/home.html";
+        return "/home/home.html";
     }
 
     @GetMapping("/getSessionValues")
