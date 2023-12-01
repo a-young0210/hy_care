@@ -94,8 +94,16 @@
 </body>
 <script>
 
+    var session;
+
     function consultStart() {
-        console.log('상담 시작 버튼 클릭')
+        ajaxJsonCall('/getSessionValues', null, function(data) {
+            console.log("data : ", data);
+            session = data;
+            if(data.email == null) {    // 세션 존재X (로그인 상태X)
+                alert("로그인/회원가입을 해주세요.");
+            }
+        });
     }
 
     document.getElementById("consult").style.color="black"
