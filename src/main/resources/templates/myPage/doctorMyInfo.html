@@ -13,7 +13,6 @@
             height: 87%;
             position: absolute;
             align-items: center;
-            border: 1px solid black;
         }
         .table-class {
             top: 20%;
@@ -21,7 +20,7 @@
             width: 80%;
             position: absolute;
             border-radius: 8px;
-            border: 1px solid black;
+            border: 1px solid rgba(54,188,67,1);
         }
         tr {
             height : 40px;
@@ -31,63 +30,66 @@
             text-align: center;
             font-weight: Bold;
             width : 50%;
-            border: 1px solid black;
         }
         .search-div {
-            width: 600px;
-            height: 46px;
-            background: rgba(255,255,255,1);
-            opacity: 1;
+            left: 32%;
+            top: 8%;
+            width: 35%;
+            height: 6%;
             position: relative;
-            top: 0px;
-            left: 0px;
+            display: flex;
             border: 1px solid rgba(54,188,67,1);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            overflow: hidden;
-        }
-        .search-text-box, .search-text-box2 {
-            border: none;
-            height: 38px;
-            display: inline-block;
-        }
-        .search-btn {
-            width: 33px;
-            height: 30px;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            opacity: 1;
-            position: absolute;
-            top: 7px;
-            left: 547px;
-            overflow: hidden;
-            border: none;
-        }
-        .v57_709 {
-            width: 33px;
-            height: 30px;
-            background: rgba(0,0,0,1);
-            opacity: 1;
-            position: relative;
-            top: 0px;
-            left: 0px;
+            border-radius: 5px;
         }
         .select-search {
-            width: 152px;
-            height: 46px;
-            background: rgba(255,255,255,0);
-            opacity: 1;
-            position: relative;
-            top: 0px;
-            left: 0px;
-            border: 1px solid rgba(54,188,67,1);
-            border-top-left-radius: 20px;
-            border-bottom-left-radius: 20px;
-            overflow: hidden;
+            width: 25%;
+            height: 100%;
+            position: absolute;
+            text-align: center;
+            flex: 0.3;
+            border: 0px;
+            border-right: 1px solid rgba(54,188,67,1);
         }
+        .search-box {
+            left: 28%;
+            width: 60%;
+            height: 90%;
+            flex: 1;
+            position: absolute;
+        }
+        .search-text-box {
+            width: 100%;
+            height: 100%;
+            text-align: right;
+            position: absolute;
+            border: 0px;
+        }
+        .search-text-box2 {
+            left: 60%;
+            width: 40%;
+            height: 100%;
+            text-align: right;
+            position: absolute;
+            border: 0px;
+        }
+        .search-btn {
+            left: 90%;
+            width: 10%;
+            height: 98%;
+            position: absolute;
+            flex: 0.2;
+            background-color: white;
+            border: 0px;
+        }
+        .search-image {
+            left: 10%;
+            top: 5%;
+            width: 80%;
+            height: 80%;
+            position: absolute;
+            background-color: white;
+        }
+
 
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -102,10 +104,11 @@
                 <option value="patient-name">환자 이름</option>
                 <option value="date">기간</option>
             </select>
-            <input type="text" class="search-text-box" id="search-text-box" style="width: 250px">
+            <div class="search-box" id="search-box">
+                <input type="text" class="search-text-box" id="search-text-box">
+            </div>
             <button class="search-btn" id="search-btn" type="button">
-                <img src="images/search-icon.png" />
-                <div class="v57_709"></div>
+                <img class = "search-image" src="images/search-icon.png"/>
             </button>
         </div>
     <table class="table-class" id="doctor-info-table">
@@ -124,10 +127,7 @@
     var table = document.getElementById("doctor-info-table");
     var session;
 
-    // 새로운 div 요소 내에 다른 요소들을 추가
-    var newDiv = $("<div>").addClass("search-form")
-
-    // header-navbar 요소에 새로 생성한 div 요소를 추가
+    // frame-container 요소에 새로 생성한 div 요소를 추가
     $("#frame-container").append(newDiv);
 
     // select-search 옵션 값 가지고오기
@@ -137,29 +137,28 @@
 
         // select 박스 값에 따라 input type 변경
         if(selectedValue === "date") {
-            var spanElement = $("<span id = \"dateHy\" style='display: inline-block; width: 30px; text-align: center'>-</span>");
+            var spanElement = $("<span id = \"dateHy\">-</span>");
             var additionalInput = $("<input>", {
                 type: "date",
                 class: "search-text-box2",
-                id: "search-text-box2"
+                id: "search-text-box2",
             });
-            $(".search-div").append(spanElement);
-            $(".search-div").append(additionalInput);
-            $("#search-text-box").width('138px');
+            $(".search-box").append(spanElement);
+            $(".search-box").append(additionalInput);
+            $("#search-text-box").width("40%");
             $("#search-text-box").attr("type", "date");
             $("#search-text-box2").attr("type", "date");
         } else {
             // date가 아닌 경우 추가적인 input 요소 제거
             $("#dateHy").remove();
             $("#search-text-box2").remove();
+            $("#search-text-box").width("100%");
             $("#search-text-box").attr("type", "text");
-            $("#search-text-box").width('250px');
         }
     });
 
     // 세션 조회
     ajaxJsonCall('/getSessionValues', null, function(data) {
-        console.log("data : ", data);
         session = data;
         if(data.email != null) {    // 세션 존재(로그인 상태)
             // 진료 기록 조회 API 호출
