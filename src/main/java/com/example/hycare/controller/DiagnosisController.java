@@ -2,6 +2,8 @@ package com.example.hycare.controller;
 
 import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.Service.DiagnosisService;
+import com.example.hycare.dto.MemberDto;
+import com.example.hycare.entity.Diagnosis;
 import com.example.hycare.entity.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +20,52 @@ public class DiagnosisController {
     @Value("${server.host.api}")
     private String baseUrl;
 
+    @PostMapping("/make")
+    public ResponseEntity<ResultEntity> makeDiagnosis (@RequestBody DiagnosisDto diagnosisDto) {
+        try{
+            String diagnosisId = diagnosisService.makeDiagnosis(diagnosisDto);
+
+            // 저장 완료 -> member diagId update API 호출
+            MemberDto memberDto = new MemberDto();
+            memberDto.setEmail(diagnosisDto.getDoctorName());
+            memberDto.setIsDoctor("D");
+            String url = baseUrl + "/update/" + diagnosisId;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity httpEntity = new HttpEntity<>(memberDto, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<ResultEntity> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    httpEntity,
+                    ResultEntity.class);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @PostMapping("/save/{uuid}")
     public ResponseEntity<ResultEntity> saveDiagnosis (@RequestBody DiagnosisDto diagnosisDto, @PathVariable String uuid) {
         try {
-            diagnosisService.saveDiagnosis(diagnosisDto, uuid);
+            DiagnosisDto diagnosisDto1 = diagnosisService.findData(uuid);
+            diagnosisService.saveDiagnosis(diagnosisDto1, uuid);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/find")
+    public ResultEntity<DiagnosisDto> findDiagnosis () {
+        try {
+            DiagnosisDto diagnosisDto = diagnosisService.findDiagnosis();
+            return new ResultEntity<>(diagnosisDto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/find/{uuid}")

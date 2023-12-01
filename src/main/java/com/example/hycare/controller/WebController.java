@@ -1,6 +1,7 @@
 package com.example.hycare.controller;
 
 import ch.qos.logback.core.model.Model;
+import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.entity.ResultEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,9 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class WebController {
+    @Value("${server.host.api}")
+    private String baseUrl;
+
 
     // 홈화면 리다이렉트
     @RequestMapping("/")
@@ -85,6 +89,53 @@ public class WebController {
         Map<String, Object> sessionValues = new HashMap<>();
         sessionValues.put("loginDiv", session.getAttribute("loginDiv"));
         sessionValues.put("email", session.getAttribute("email"));
+        return ResponseEntity.ok(sessionValues);
+    }
+
+    @GetMapping("/get-uuid-session")
+    public ResponseEntity<Map<String, Object>> getUuidSession(HttpSession session) {
+        Map<String, Object> sessionValues = new HashMap<>();
+        sessionValues.put("loginDiv", session.getAttribute("loginDiv"));
+        sessionValues.put("email", session.getAttribute("email"));
+        if(session.getAttribute("loginDiv").equals("0")) {
+            // UUID 랜덤 생성
+            char str[] = new char[1];
+            StringBuffer uuid = new StringBuffer();
+            for (int i = 0; i < 10; i++) {
+                str[0] = (char) ((Math.random() * 26) + 65);
+                uuid.append(str);
+            }
+            // 진료 기록 생성 API 호출
+            DiagnosisDto diagnosisDto = new DiagnosisDto();
+            diagnosisDto.setDiagId(uuid.toString());
+            diagnosisDto.setDoctorName((String) session.getAttribute("email"));
+            String url = baseUrl + "/diagnosis/make";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity httpEntity = new HttpEntity<>(diagnosisDto, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<ResultEntity> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    httpEntity,
+                    ResultEntity.class);
+
+            session.setAttribute("uuid", uuid.toString());
+        } else {    // 환자인 경우
+            String url = baseUrl + "/diagnosis/find";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity httpEntity = new HttpEntity<>(headers);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<DiagnosisDto> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    httpEntity,
+                    DiagnosisDto.class);
+
+            session.setAttribute("uuid", response.getBody().getDiagId());
+        }
+        sessionValues.put("uuid", session.getAttribute("uuid"));
         return ResponseEntity.ok(sessionValues);
     }
 }

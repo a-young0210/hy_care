@@ -87,13 +87,13 @@
             window.identity = parseJwt(response.credential);
             // document.getElementById("welcome").innerHTML = window.identity.email;
             var email = window.identity.email
-            var redirect_url = "http://localhost:8080/api/auth/login/complete?email=" + email + "&loginDiv=" + loginDiv;
+            var redirect_url = "/api/auth/login/complete?email=" + email + "&loginDiv=" + loginDiv;
             var payload = {
                 "email": email,
                 "name": window.identity.name,
                 "loginDiv": loginDiv
             };
-            fetch("http://localhost:8080/api/auth/google/complete",
+            fetch("/api/auth/google/complete",
                 {
 
                     method:"POST",

@@ -7,5 +7,5 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DiagnosisRepository extends  JpaRepository<Diagnosis,String>{
+public interface DiagnosisRepository extends  JpaRepository<Diagnosis,String>, DiagnosisRepositoryCustom{
 }
