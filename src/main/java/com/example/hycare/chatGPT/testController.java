@@ -30,7 +30,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/summary")
 public class testController {
     private final ChatService chatService;
     private final DiagnosisService diagnosisService;
@@ -40,7 +39,7 @@ public class testController {
     private String baseUrl;
 
     //chat-gpt API 호출
-     @PostMapping("/")
+     @PostMapping("/summary")
      public String summary(@RequestBody Map<String, String> stt, @RequestParam String email) throws IOException {
 
         summary = chatService.getChatResponse(stt);
@@ -92,5 +91,18 @@ public class testController {
 
     }
 
+    @PostMapping("/classification")
+    public String classification(@RequestBody List<String> symptom) throws IOException {
+        String classification = chatService.getClassification(symptom);
+
+        if(classification.contains("요."))
+            classification = classification.replace("요.", "");
+        else if(classification.contains("요"))
+            classification = classification.replace("요", "");
+        else if(classification.contains("\n"))
+            classification = classification.replace("\n", "");
+
+        return classification;
+    }
 }
 
