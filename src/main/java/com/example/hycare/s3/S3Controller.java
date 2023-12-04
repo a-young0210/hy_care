@@ -38,6 +38,7 @@ public class S3Controller {
             // memberDto 세팅
             MemberDto memberDto = new MemberDto();
             memberDto.setEmail(email);
+            memberDto.setIsDoctor("P");
             // member diagId 업데이트를 위한 API 호출
             String url = baseUrl + "/member/update/" + uuid;
             HttpHeaders headers = new HttpHeaders();

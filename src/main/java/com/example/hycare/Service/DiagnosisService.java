@@ -30,6 +30,7 @@ public class DiagnosisService {
     }
 
     public void saveDiagnosis(DiagnosisDto diagnosisDto, String uuid) {
+        DiagnosisDto findDianosis = findData(uuid);
 
         // Dto -> Entity
         Diagnosis diagnosis = new Diagnosis();
@@ -37,6 +38,7 @@ public class DiagnosisService {
         diagnosis.setDiagLink(diagnosisDto.getDiagLink());
         diagnosis.setPatientName(diagnosisDto.getPatientName());
         diagnosis.setConsultationSheet(diagnosisDto.getConsultationSheet());
+        diagnosis.setDoctorName(findDianosis.getDoctorName());
 
         Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
