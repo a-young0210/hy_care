@@ -60,9 +60,14 @@ public class WebController {
         return "login/login.html";
     }
 
+    @RequestMapping("/naver-callback")
+    public String naverCallback(Model model) {
+        return "login/callback.html";
+    }
+
     // 로그인 성공 화면 리다이렉트
     @RequestMapping("/api/auth/login/complete")
-    public String loginGoogleGet(@RequestParam String email, @RequestParam String loginDiv, org.springframework.ui.Model model, HttpServletRequest request) {
+    public String loginGoogleGet(@RequestParam String email, String loginDiv, org.springframework.ui.Model model, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         session.setAttribute("loginDiv", loginDiv);

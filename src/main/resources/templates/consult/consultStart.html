@@ -103,6 +103,7 @@
             if(data.email == null) {    // 세션 존재X (로그인 상태X)
                 alert("로그인/회원가입을 해주세요.");
             } else {    // 로그인 되어있는 상태
+                localStorage.setItem('email', data.email);
                 ajaxJsonCall('/get-uuid-session', null, function(result) {
                     session = result;
                     location.href='http://52.194.240.137:3000/room';

@@ -2,6 +2,7 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<meta name="referrer" content="strict-origin-when-cross-origin" />
 <title>Hy-care</title>
 <style>
     .frame-container {
@@ -43,6 +44,10 @@
         alignment: center;
     }
 
+    #naver_id_login {
+
+    }
+
 </style>
 <body>
 <th:block layout:fragment="header" th:include="@{fragments/header}"></th:block>
@@ -52,18 +57,41 @@
         <span class="login-text">SNS로 로그인하기</span>
         <div class="login-button-div" id="login-button-div">
             <div class="google-login-div" id="buttonDiv" th:align="center" th>
+
             </div>
+            <div id="naver_id_login"></div>
         </div>
     </div>
 </div>
 
 <th:block layout:fragment="footer" th:include="@{fragments/footer}"></th:block>
 </body>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <div>
     <!-- 구글 로그인 버튼 노출 영역-->
+<!--    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 
+    <script type="text/javascript">
+        var naver_id_login = new naver_id_login("mAaNs2Whf45FyutnBPZi", "http://52.194.240.137:8080/naver-callback");
+        // naver_id_login.init();
+        var state = naver_id_login.getUniqState();
+
+        naver_id_login.setButton("green", 3, 40);
+        // naver_id_login.setDomain("YOUR_SERVICE_URL");
+        naver_id_login.setState(state);
+        var email = naver_id_login.getProfileData('email');
+        naver_id_login.init_naver_id_login();
+
+        $("#naver_id_login a img").attr("width", "195")
+
+        // $(document).on("click", "#naverLogin", function(){
+        // 	var btnNaverLogin = document.getElementsByClassName("login_btn_naver").firstChild;
+        // 	btnNaverLogin.click()
+        // })
+    </script>
     <script type="text/javascript">
         window.identity = {};
 
@@ -81,19 +109,21 @@
             )
 
         function handleCredentialResponse(response){
+            console.log("encoded jwt id token : ", response.credential);
             // 의사/환자 구분값
             var loginDiv  = localStorage.getItem('key');
 
             window.identity = parseJwt(response.credential);
             // document.getElementById("welcome").innerHTML = window.identity.email;
             var email = window.identity.email
-            var redirect_url = location.href + "/api/auth/login/complete?email=" + email + "&loginDiv=" + loginDiv;
+            var redirect_url = "http://52.194.240.137:8080/api/auth/login/complete?email=" + email + "&loginDiv=" + loginDiv;
+            console.log("redirect_url : ", redirect_url);
             var payload = {
                 "email": email,
                 "name": window.identity.name,
                 "loginDiv": loginDiv
             };
-            fetch(location.href + "/api/auth/google/complete",
+            fetch("http://52.194.240.137:8080/api/auth/google/complete",
                 {
 
                     method:"POST",
@@ -110,7 +140,7 @@
 
         window.onload = function () {
             google.accounts.id.initialize({
-                client_id: '894423569903-kq2uqblg322m601hqgfapmqg7ife35nn.apps.googleusercontent.com',
+                client_id: '894423569903-mh5ac188899j7ceavdg4oab352cvpru1.apps.googleusercontent.com',
                 callback: handleCredentialResponse,
             });
 

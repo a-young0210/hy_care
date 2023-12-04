@@ -29,7 +29,7 @@ public class DiagnosisController {
             MemberDto memberDto = new MemberDto();
             memberDto.setEmail(diagnosisDto.getDoctorName());
             memberDto.setIsDoctor("D");
-            String url = baseUrl + "/update/" + diagnosisId;
+            String url = baseUrl + "/member/update/" + diagnosisId;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity httpEntity = new HttpEntity<>(memberDto, headers);

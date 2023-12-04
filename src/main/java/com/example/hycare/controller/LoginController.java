@@ -26,7 +26,8 @@ public class LoginController {
 
         // Dto value setting
         MemberDto memberDto = new MemberDto();
-        memberDto.setMemName(loginParam.get("name"));
+        String[] name = loginParam.get("email").split("@");
+        memberDto.setMemName(name[0]);
         memberDto.setEmail(loginParam.get("email"));
         memberDto.setIsDoctor(loginParam.get("loginDiv"));
 
