@@ -19,6 +19,7 @@ import java.util.Map;
 // 화면 전환 Controller
 @Slf4j
 @Controller
+@CrossOrigin(origins = {"http://18.183.4.163:8080", "http://18.183.4.163:3000"},allowedHeaders = "*")
 public class WebController {
     @Value("${server.host.api}")
     private String baseUrl;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @EnableCaching
 @SpringBootApplication
-@CrossOrigin(origins = "http://52.194.240.137:8080",allowedHeaders = "*")
+@CrossOrigin(origins = "http://18.183.4.163:8080",allowedHeaders = "*")
 public class HyCareApplication {
 
     public static void main(String[] args) {

@@ -30,6 +30,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@CrossOrigin(origins = {"http://18.183.4.163:8080", "http://18.183.4.163:3000"},allowedHeaders = "*")
 public class testController {
     private final ChatService chatService;
     private final DiagnosisService diagnosisService;
