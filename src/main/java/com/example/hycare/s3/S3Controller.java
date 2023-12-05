@@ -24,19 +24,20 @@ public class S3Controller {
 
     // S3 저장
     @PostMapping("/s3-save/{uuid}")
-    public ResponseEntity<ResultEntity> uploadFile(@RequestBody String path, @PathVariable String uuid) {
+    public ResponseEntity<ResultEntity> uploadFile(@RequestBody String path, @PathVariable String uuid, @RequestParam String email) {
         try {
             File file = new File(path + "/chatGPTDto.json");
             String s3Url = s3Service.upload(file, "static", uuid);
 
             DiagnosisDto diagnosisDto = new DiagnosisDto();
             diagnosisDto.setDiagLink(s3Url);
+            diagnosisDto.setPatientName(email);
 
             diagnosisService.saveDiagnosis(diagnosisDto, uuid);
 
             // memberDto 세팅
             MemberDto memberDto = new MemberDto();
-            memberDto.setEmail("이메일");
+            memberDto.setEmail(email);
             memberDto.setIsDoctor("P");
             // member diagId 업데이트를 위한 API 호출
             String url = baseUrl + "/member/update/" + uuid;

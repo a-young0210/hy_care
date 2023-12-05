@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    var naver_id_login = new naver_id_login("mAaNs2Whf45FyutnBPZi", "http://18.183.4.163:8080/naver-callback");
+    // 네이버 사용자 프로필 조회
+    naver_id_login.get_naver_userprofile("naverSignInCallback()");
+    // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+    function naverSignInCallback() {
+        // 세션 확인
+        var loginDiv  = localStorage.getItem('key');
+        var email = naver_id_login.getProfileData('email');
+
+        var redirect_url = "http://18.183.4.163:8080/api/auth/login/complete?email=" + email + "&loginDiv=" + loginDiv;
+        console.log("redirect_url : ", redirect_url);
+        var payload = {
+            "email": email,
+            "loginDiv": loginDiv
+        };
+        fetch("http://18.183.4.163:8080/api/auth/google/complete",
+            {
+
+                method:"POST",
+                referrerPolicy: 'no-referrer-when-downgrade',
+                body:JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                window.location.href=redirect_url
+            })
+    }
+
+
+</script>
+</body>
+</html>

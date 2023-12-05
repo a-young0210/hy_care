@@ -1,6 +1,7 @@
 package com.example.hycare.dto;
 
 import lombok.*;
+import org.springframework.http.HttpStatusCode;
 
 import java.sql.Timestamp;
 

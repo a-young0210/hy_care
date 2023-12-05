@@ -18,13 +18,27 @@ import java.util.Optional;
 public class DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
 
+    public String makeDiagnosis(DiagnosisDto diagnosisDto) {
+        Diagnosis diagnosis = new Diagnosis();
+        diagnosis.setDiagId(diagnosisDto.getDiagId());
+        diagnosis.setDoctorName(diagnosisDto.getDoctorName());
+
+        // DB에 저장
+        Diagnosis diagnosis1 = diagnosisRepository.save(diagnosis);
+
+        return diagnosis1.getDiagId();
+    }
+
     public void saveDiagnosis(DiagnosisDto diagnosisDto, String uuid) {
+        DiagnosisDto findDianosis = findData(uuid);
 
         // Dto -> Entity
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.setDiagId(uuid);
         diagnosis.setDiagLink(diagnosisDto.getDiagLink());
+        diagnosis.setPatientName(diagnosisDto.getPatientName());
         diagnosis.setConsultationSheet(diagnosisDto.getConsultationSheet());
+        diagnosis.setDoctorName(findDianosis.getDoctorName());
 
         Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
@@ -32,6 +46,23 @@ public class DiagnosisService {
 
         // DB에 저장
         diagnosisRepository.save(diagnosis);
+    }
+
+    public DiagnosisDto findDiagnosis() {
+        DiagnosisDto diagnosisDto = new DiagnosisDto();
+        Diagnosis diagnosis = diagnosisRepository.findDiagnosis();
+        if(diagnosis != null) {
+            diagnosisDto = DiagnosisDto.builder()
+                    .diagId(diagnosis.getDiagId())
+                    .diagLink(diagnosis.getDiagLink())
+                    .consultationSheet(diagnosis.getConsultationSheet())
+                    .diagTime(diagnosis.getDiagTime())
+                    .doctorName(diagnosis.getDoctorName())
+                    .patientName(diagnosis.getPatientName())
+                    .build();
+
+        }
+        return diagnosisDto;
     }
 
     public DiagnosisDto findData(String id) {

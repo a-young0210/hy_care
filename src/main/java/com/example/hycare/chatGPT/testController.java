@@ -1,11 +1,14 @@
 package com.example.hycare.chatGPT;
 
+import com.example.hycare.Service.DiagnosisService;
+import com.example.hycare.dto.DiagnosisDto;
 import com.example.hycare.entity.ResultEntity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.flashvayne.chatgpt.service.ChatgptService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -27,17 +30,18 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/summary")
+@CrossOrigin(origins = {"http://18.183.4.163:8080", "http://18.183.4.163:3000"},allowedHeaders = "*")
 public class testController {
     private final ChatService chatService;
+    private final DiagnosisService diagnosisService;
     public String summary;
 
     @Value("${server.host.api}")
     private String baseUrl;
 
     //chat-gpt API 호출
-     @PostMapping("/{uuid}")
-     public String summary(@RequestBody Map<String, String> stt, @PathVariable String uuid) throws IOException {
+     @PostMapping("/summary")
+     public String summary(@RequestBody Map<String, String> stt, @RequestParam String email) throws IOException {
 
         summary = chatService.getChatResponse(stt);
 
@@ -64,8 +68,10 @@ public class testController {
          ObjectMapper mapper = new ObjectMapper();
          mapper.writeValue(new File(path + "/chatGPTDto.json"), chatGPTDto);
 
+
          // S3에 저장할 수 있도록 API 호출
-         String url = baseUrl + "/s3-save/" + uuid;
+         DiagnosisDto diagnosisDto = diagnosisService.findDiagnosis();
+         String url = baseUrl + "/s3-save/" + diagnosisDto.getDiagId() + "?email=" + email;
          HttpHeaders headers = new HttpHeaders();
          headers.setContentType(MediaType.APPLICATION_JSON);
          HttpEntity httpEntity = new HttpEntity<>(path, headers);
@@ -86,5 +92,18 @@ public class testController {
 
     }
 
+    @PostMapping("/classification")
+    public String classification(@RequestBody List<String> symptom) throws IOException {
+        String classification = chatService.getClassification(symptom);
+
+        if(classification.contains("요."))
+            classification = classification.replace("요.", "");
+        else if(classification.contains("요"))
+            classification = classification.replace("요", "");
+        else if(classification.contains("\n"))
+            classification = classification.replace("\n", "");
+
+        return classification;
+    }
 }
 
